@@ -1,0 +1,30 @@
+insert.size.hist <-
+function(readpairs, returnInserts=FALSE, main, xlab, ylab, breaks, col, ...){
+
+  # insert sizes
+  inserts <- width(readpairs)
+
+  # graphical parameters
+  if(missing(main)) main <- ""
+  if(missing(xlab)) xlab <- "Insert size"
+  if(missing(ylab)) ylab <- "Frequency"
+  if(missing(breaks)) breaks <- 100
+  if(missing(col)) col <- "lightblue"
+
+  # average and median insert size
+  m <- mean(inserts)
+  me <- median(inserts)
+  std <- sd(inserts)
+
+  hist(inserts, freq=TRUE, xlab=xlab, ylab=ylab, breaks=breaks, col=col, main=main, ...)
+  abline(v=c(m - std, m, m + std, me), lty=2, col=c(1,2,1,3), lwd=2)
+  legend("topleft", c(paste("average (", round(m, 2), ")", sep=""),
+                  paste("average +- SD (", round(std, 2), ")", sep=""),
+                  paste("median (", round(me, 2), ")", sep="")), lty=2, col=c(2,1,3), lwd=2)
+
+  if(returnInserts){
+    names(inserts) <- values(readpairs)[[1L]][,1]
+    return(inserts)
+  }
+}
+
