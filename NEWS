@@ -1,0 +1,8 @@
+CHANGES IN VERSION 0.99.2
+----------------------
+
+  o added elements 'targetCoverageSD' and 'targetCoverageQuantiles' to output of function coverage.target
+  o added column 'coverageSD' to 'targetCoverages' output of function coverage.target
+  o 'chrom.barplot' can now show fractions of reads and targets per chromosome simultaneously 
+  o 'coverage.plot' can now be called repeatedly to show coverage of several samples in one graph
+  

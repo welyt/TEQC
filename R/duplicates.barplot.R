@@ -41,7 +41,7 @@ function(reads, targets, returnDups=FALSE, truncateX, col=c("red","lightblue"), 
   barmat <- barmat0 / rowSums(barmat0)
 
   # graphical parameters
-  if(missing(xlab)) xlab <- "Number of duplicates"
+  if(missing(xlab)) xlab <- "Read multiplicity"
   if(missing(ylab)) ylab <- "Fraction of reads"
   if(missing(ylim)) ylim <- c(0, max(barmat) + 0.05)
 

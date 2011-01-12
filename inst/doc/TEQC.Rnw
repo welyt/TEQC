@@ -180,23 +180,29 @@ insert.size.hist(readpairs, breaks=10)
 One important component of quality control in target capture experiments is to check whether
 most of the sequenced reads actually fall on target regions.
 A barplot showing the numbers of reads aligning to each chromosome can give
-a first impression on that (see figure \ref{chrom.barplot}). The plot is more useful when there
-are targets only on some of the chromosomes, for which hence a high number of reads is expected.\\
+a first impression on that. When providing the function \Rfunction{chrom.barplot} only with the
+reads table, the resulting barplot will show absolute counts. There is also the option to give both
+the reads and the targets table, which will show fractions of reads and targets, respectively,
+falling on each chromosome. For the reads, this is the fraction within the total \emph{number} of reads
+(since reads are usually expected to have all the same length).
+In contrast, for the targets, the fraction of targeted bases on each chromosome is calculated.
+Since targets might strongly vary in length it is reasonable to account for the actual target \emph{sizes} instead
+of considering merely numbers of targets per chromosome. In this way you can compare directly if
+the amount of reads corresponds more or less to the amount of target on a certain chromosome (see figure \ref{chrom.barplot}).
+%The plot is more useful when there are targets only on some of the chromosomes, for which hence a high number of reads is expected.\\
 
 \noindent
-\Rcode{> par(mar=c(8,4,4,2))}\\
-\Rcode{> chrom.barplot(reads)}\\
+\Rcode{> chrom.barplot(reads, targets)}\\
 
 
 \setkeys{Gin}{width=1.2\textwidth}
 \begin{figure}[htb!]
 \begin{center}
 <<chrombarplot, fig=TRUE, echo=F, eps=F, width=12, height=5>>=
-par(mar=c(8,4,4,2))
-chrom.barplot(reads)
+chrom.barplot(reads, targets)
 @
-\vspace{-0.4cm}
-\caption{{\small \label{chrom.barplot} Boxplots of aligned reads per chromosome.}}
+\vspace{-1.2cm}
+\caption{{\small \label{chrom.barplot} Fractions of reads (green) and target (orange) per chromosome.}}
 \end{center}
 \end{figure}
 \setkeys{Gin}{width=0.8\textwidth}
@@ -258,15 +264,17 @@ fraction.reads.target(readpairs, targets)
 Besides high capture specificity, it is of course important to check the read coverage
 within target regions, since it is crucial for follow-up analyses.
 The function \Rfunction{coverage.target} calculates read coverage for each base that is sequenced
-and/or located in a target region. It returns the average coverage over all targeted bases.
-When option \Rfunarg{perBase} is set to \Rfunarg{TRUE}, a list is returned that besides
-the average coverage (list element \Robject{avgTargetCoverage}) has the two elements
+and/or located in a target region. It returns a list with the average (list element \Robject{avgTargetCoverage}),
+standard deviation (\Robject{targetCoverageSD}) and main quantiles (\Robject{targetCoverageQuantiles})
+of the coverage over all targeted bases.
+When option \Rfunarg{perBase} is set to \Rfunarg{TRUE}, the returned list additionally has the two elements
 \Robject{coverageAll} and \Robject{coverageTarget}. The former one is a \Rclass{SimpleRleList}
 containing coverages for all bases present in the \Robject{reads} table, the latter one
 contains coverages for all targeted bases. For some \Rpackage{TEQC} functions we need either
 one or the other. When option \Rfunarg{perTarget} is set to \Rfunarg{TRUE}, the returned list
-has the additional element \Robject{targetCoverages}, that is the input \Robject{targets}
-\Rclass{RangedData} table, now including average coverages per target region as a 'values' column.
+has the additional element \Robject{targetCoverages}. This is the input \Robject{targets}
+\Rclass{RangedData} table, now including as 'values' columns the average coverage
+(column \Robject{avgCoverage}) and standard deviation (column \Robject{coverageSD}) per target region.
 Coverage calculations might take a while, depending on the numbers of reads and targets.
 
 <<coverage.target>>=
@@ -618,9 +626,10 @@ coverage.density(covlist, normalized=F)
 \setkeys{Gin}{width=0.8\textwidth}
 
 
-Also the coverage uniformity plot shown above (figure \ref{coverage.uniformity}) can be
-produced for several samples within the same graph. The function can be called repeatedly,
-while specifying option \Rfunarg{add=TRUE} (see figure \ref{cov.uniformity.2}).
+Also the coverage uniformity and coverage along chromosome plots shown above (figures
+\ref{coverage.uniformity} and \ref{coverage.plot}) can be
+produced for several samples within the same graph. The functions can be called repeatedly,
+while specifying option \Rfunarg{add=TRUE} (see figures \ref{cov.uniformity.2} and \ref{coverage.plot.2}).
 As for the densities, the uniformity is almost identical for the two samples since
 normalized coverage values are used for this plot.\\
 
@@ -636,6 +645,21 @@ coverage.uniformity(Coverage2, addlines=F, add=T, col="blue", lty=2)
 @
 \vspace{-0.4cm}
 \caption{{\small \label{cov.uniformity.2} Target coverage uniformity of two samples.}}
+\end{center}
+\end{figure}
+
+\noindent
+\Rcode{> coverage.plot(Coverage\$coverageAll, targets, Offset=100, chr="chr1", Start=11157524, End=11158764)}\\
+\Rcode{> coverage.plot(Coverage2\$coverageAll, add=T, col.line=2, chr="chr1", Start=11157524, End=11158764)} \\
+
+\begin{figure}[htb!]
+\begin{center}
+<<coverageplot2, fig=TRUE, echo=F, eps=F>>=
+coverage.plot(Coverage$coverageAll, targets, Offset=100, chr="chr1", Start=11157524, End=11158764)
+coverage.plot(Coverage2$coverageAll, add=T, col.line=2, chr="chr1", Start=11157524, End=11158764)
+@
+\vspace{-0.4cm}
+\caption{{\small \label{coverage.plot.2} Coverage along chromosome plot for two samples.}}
 \end{center}
 \end{figure}
 
@@ -686,6 +710,9 @@ toLatex(sessionInfo())
 %------------------------------------------------------------------------------------------------
 
 \section{References}
+
+\noindent Hummel M, Bonnin S, Lowy E, Roma G. TEQC: an R-package for quality control in
+target capture experiments. Submitted.\\
 
 \noindent Bainbridge MN, Wang M, Burgess DL, Kovar C, Rodesch MJ, D'Ascenzo M, Kitzman J, Wu Y-Q, Newsham I, Richmond TA, Jeddeloh JA, Muzny D, Albert TJ, Gibbs RA.
 Whole exome capture in solution with 3 Gbp of data.

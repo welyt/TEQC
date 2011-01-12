@@ -2,7 +2,7 @@ coverage.density <-
 function(coveragelist, normalized=TRUE, legend, main, xlab, col, lwd, lty, xlim, ylim, ...){
 
   # in case coverages of just one sample are given
-  if(!is.null(names(coveragelist)) & all(names(coveragelist) %in% c("avgTargetCoverage", "targetCoverages", "coverageAll", "coverageTarget")))
+  if(!is.null(names(coveragelist)) & all(names(coveragelist) %in% c("avgTargetCoverage", "targetCoverageSD", "targetCoverageQuantiles", "targetCoverages", "coverageAll", "coverageTarget")))
     coveragelist <- list(coveragelist)
 
   # check input

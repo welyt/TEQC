@@ -1,7 +1,7 @@
 \name{duplicates.barplot}
 \alias{duplicates.barplot}
 \title{Read duplicates barplot}
-\description{Barplot showing fractions of reads / read pairs for which there are two, three, ... copies.
+\description{Barplot showing fractions of reads / read pairs which are unique and for which there are two, three, ... copies.
     Separate bars are made for on- and off-target reads / read pairs}
 
 \usage{

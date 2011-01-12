@@ -1,10 +1,10 @@
 Package: TEQC
 Type: Package
 Title: Quality control for target capture experiments
-Version: 0.99.1
+Version: 0.99.2
 Date: 2010-10-04
 Author: M. Hummel, S. Bonnin, E. Lowy, G. Roma
-Maintainer: M. Hummel <manuela.hummel@crg.es>
+Maintainer: Manuela Hummel <manuela.hummel@crg.es>
 Description: Target capture experiments combine hybridization-based (in solution or on microarrays)
 	capture and enrichment of genomic regions of interest (e.g. the exome) with high throughput sequencing of the
 	captured DNA fragments. This package provides functionalities for assessing and visualizing the 

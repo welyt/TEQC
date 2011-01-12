@@ -27,17 +27,19 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
 
   # restrict to target bases
   covercounts.target <- RleList()
-  targetcov <- NULL
+  targetcov <- targetSD <- NULL
   for(chr in names(covercounts.all)){
     if(chr %in% chr.targ){
       cov.chr <- covercounts.all[[chr]]
       ir.chr <- ranges(targets)[[chr]]
       tmp <- lapply(ir.chr, function(x) seqselect(cov.chr, x))
 
-      # average coverage per target
+      # coverage average and SD per target
       if(perTarget){
         avgcov <- sapply(tmp, mean)
+        sdcov <- sapply(tmp, sd)
         targetcov <- c(targetcov, avgcov)
+        targetSD <- c(targetSD, sdcov)
       }
       
       # coverage per base
@@ -47,14 +49,16 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   }
   names(covercounts.target) <- chr.targ
   
-  # average coverage for targeted bases
-  S <- sum(sum(covercounts.target))
-  n <- sum(sapply(covercounts.target, length))
-  res <- S / n
-  names(res) <- "avgTargetCoverage"
+  # coverage average, SD and quartiles for all targeted bases
+  avg <- mean(unlist(covercounts.target))
+  std <- sd(unlist(covercounts.target))
+  qu <- quantile(unlist(covercounts.target))
+  
+  res <- list(avgTargetCoverage=avg, targetCoverageSD=std, targetCoverageQuantiles=qu)
 
   if(perTarget){
     targets$avgCoverage <- targetcov
+    targets$coverageSD <- targetSD
     res <- c(res, list(targetCoverages=targets))
   }
 

@@ -14,20 +14,19 @@ coverage.target(reads, targets, Offset = 0, perTarget = TRUE, perBase = TRUE)
       of target regions, i.e. output from \code{\link{get.targets}}}
   \item{Offset}{integer; add \code{Offset} bases on both sides to targeted regions and potentially
       collapse resulting overlapping target regions}
-  \item{perTarget}{if TRUE, average coverages per target are calculated and returned}
+  \item{perTarget}{if TRUE, coverage average and standard deviation per target are calculated and returned}
   \item{perBase}{if TRUE, the per-base coverages i) only for targeted bases and
      ii) for all sequenced and/or targeted bases, are returned}
 }
 %\details{}
 
-\value{If both \code{perTarget} and \code{perBase} are \code{FALSE}, only the average
-      coverage over all target bases is returned.
-      
-      If at least one of \code{perTarget} and \code{perBase} are \code{TRUE} a list is
-      returned with elements
+\value{A list is returned with elements
   \item{avgTargetCoverage}{average coverage over all target bases}
-  \item{targetCoverages}{input \code{RangedData} table \code{targets} with an additional 'values'
-      column containing average coverages for each target; only returned if \code{perTarget} equals \code{TRUE}}
+  \item{targetCoverageSD}{standard deviation of coverage of all target bases}
+  \item{targetCoverageQuantiles}{0\% (minium), 25\%, 50\% (median), 75\% and 100\% (maximum) quantiles of coverage of all target bases}
+  \item{targetCoverages}{Input \code{RangedData} table \code{targets} with two additional 'values'
+      columns \code{avgCoverage} and \code{coverageSD}. The former contains the average coverage for each target,
+      the latter the respective coverage standard deviation. Only returned if \code{perTarget} equals \code{TRUE}.}
   \item{coverageAll}{\code{\link[IRanges:Rle-class]{RleList}} containing a \code{\link[IRanges:Rle-class]{Rle}}
         vector for each chromosome with coverages for all bases that are sequenced and/or within a targeted;
         only returned if \code{perBase} equals \code{TRUE}}

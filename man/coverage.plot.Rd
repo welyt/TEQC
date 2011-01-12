@@ -3,7 +3,7 @@
 \title{Coverage versus base position plot}
 \description{Line plot of per-base coverages along a genomic region. Position of target regions can be shown.}
 \usage{
-coverage.plot(coverageAll, targets, chr, Start, End, Offset = 0, col.line = 1, col.target = "orange", col.offset = "yellow", xlab, ylab, ...)
+coverage.plot(coverageAll, targets, chr, Start, End, Offset = 0, add = FALSE, col.line = 1, col.target = "orange", col.offset = "yellow", xlab, ylab, ylim, ...)
 }
 
 \arguments{
@@ -15,13 +15,19 @@ coverage.plot(coverageAll, targets, chr, Start, End, Offset = 0, col.line = 1, c
   \item{Start}{genomic position where to start the plot}
   \item{End}{genomic position where to end the plot}
   \item{Offset}{integer; highlight \code{Offset} bases on both sides of each targeted region; defaults to 0}
+  \item{add}{if \code{TRUE}, the coverage line of a new sample is added to an already existing plot}
   \item{col.line}{color of the coverage line}
   \item{col.target}{color of the bar indicating target regions}
   \item{col.offset}{color for highlighting \code{Offset} on the sides of target regions}
   \item{xlab, ylab}{x- and y-axis labels}
+  \item{ylim}{y-axis coordinate ranges}
   \item{\dots}{further graphical parameters, passed to \code{plot}}
 }
-%\details{}
+\details{If coverage of a new sample is added to an existing plot with \code{add = TRUE}, parameters
+  \code{chr}, \code{Start}, \code{End} still have to be specified and should be the same as
+  in the previous call in order to make sense. Parameters \code{targets} and \code{Offset} can but
+  do not have to be given again. They can also differ from the previous ones, if for the additional sample
+  a different target was captured.}
 
 \value{Line plot showing per-base read coverages for a specified genomic region.
       When positions of target regions are provided, a bar on the bottom indicates their location
