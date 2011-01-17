@@ -53,4 +53,4 @@ function(coverageAll, targets, chr, Start, End, Offset=0, add=FALSE,
 }
 
 
-coverage.plot(coverageAll, targets, chr, Start, End, Offset)
+
