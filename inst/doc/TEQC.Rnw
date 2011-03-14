@@ -712,7 +712,7 @@ toLatex(sessionInfo())
 \section{References}
 
 \noindent Hummel M, Bonnin S, Lowy E, Roma G. TEQC: an R-package for quality control in
-target capture experiments. Submitted.\\
+target capture experiments. Bioinformatics 2011; doi: 10.1093/bioinformatics/btr122.\\
 
 \noindent Bainbridge MN, Wang M, Burgess DL, Kovar C, Rodesch MJ, D'Ascenzo M, Kitzman J, Wu Y-Q, Newsham I, Richmond TA, Jeddeloh JA, Muzny D, Albert TJ, Gibbs RA.
 Whole exome capture in solution with 3 Gbp of data.

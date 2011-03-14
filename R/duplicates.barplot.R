@@ -1,3 +1,15 @@
+# get on- and off-target read multiplicities per chromosome
+multfun <- function(x){
+  if(nrow(x) > 0){
+    r <- sort(x$ranges)  # just in case reads are not sorted
+    dups <- Rle(duplicated(r))
+    m <- runLength(dups)[runValue(dups)] + 1  # -> reads with > 1 copies
+    m1 <- nrow(x) - sum(m)                    # -> unique reads
+    c("1"=m1, table(m))
+  }
+}
+
+
 duplicates.barplot <-
 function(reads, targets, returnDups=FALSE, truncateX, col=c("red","lightblue"), xlab, ylab, ylim, ...){
 
@@ -6,16 +18,6 @@ function(reads, targets, returnDups=FALSE, truncateX, col=c("red","lightblue"), 
   reads.on <- reads[on.target,]
   reads.off <- reads[!on.target,]
 
-  # get on- and off-target read multiplicities per chromosome
-  multfun <- function(x){
-    if(nrow(x) > 0){
-      r <- sort(x$ranges)  # just in case reads are not sorted
-      dups <- Rle(duplicated(r))
-      m <- runLength(dups)[runValue(dups)] + 1  # -> reads with > 1 copies
-      m1 <- nrow(x) - sum(m)                    # -> unique reads
-      c("1"=m1, table(m))
-    }
-  }
   params.on <- RDApplyParams(rangedData=reads.on, applyFun=multfun)
   multi.on <- unlist(rdapply(params.on))
   params.off <- RDApplyParams(rangedData=reads.off, applyFun=multfun)

@@ -14,18 +14,18 @@ citEntry(entry="Manual",
         ".", sep = "")
 )
 
-#citEntry(entry="Article",
-#    title = "TEQC: an R-package for quality control in target capture experiments",
-#    author = personList(as.person("M. Hummel"), as.person("S. Bonnin"),
-#	as.person("E. Lowy"), as.person("G. Roma")),
-#    journal = "Bioinformatics",
-#    number = ,
-#    pages = "",
-#    year = Submitted,
-#    textVersion =
-#      paste("M. Hummel, S. Bonnin, E. Lowy and G. Roma",
-#		"TEQC: an R-package for quality control in target capture experiments,",
-#        	"Submitted.")
-#)
+citEntry(entry="Article",
+    title = "TEQC: an R-package for quality control in target capture experiments",
+    author = personList(as.person("M. Hummel"), as.person("S. Bonnin"),
+	as.person("E. Lowy"), as.person("G. Roma")),
+    journal = "Bioinformatics",
+    number = doi: 10.1093/bioinformatics/btr122,
+    pages = "",
+    year = 2011,
+    textVersion =
+      paste("M. Hummel, S. Bonnin, E. Lowy and G. Roma (2011)",
+		"TEQC: an R-package for quality control in target capture experiments,",
+        	"Bioinformatics, doi: 10.1093/bioinformatics/btr122")
+)
 
 
