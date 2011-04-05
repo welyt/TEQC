@@ -1,5 +1,5 @@
 insert.size.hist <-
-function(readpairs, returnInserts=FALSE, main, xlab, ylab, breaks, col, ...){
+function(readpairs, returnInserts=FALSE, legendpos="topleft", main, xlab, ylab, breaks, col, ...){
 
   # insert sizes
   inserts <- width(readpairs)
@@ -18,7 +18,7 @@ function(readpairs, returnInserts=FALSE, main, xlab, ylab, breaks, col, ...){
 
   hist(inserts, freq=TRUE, xlab=xlab, ylab=ylab, breaks=breaks, col=col, main=main, ...)
   abline(v=c(m - std, m, m + std, me), lty=2, col=c(1,2,1,3), lwd=2)
-  legend("topleft", c(paste("average (", round(m, 2), ")", sep=""),
+  legend(legendpos, c(paste("average (", round(m, 2), ")", sep=""),
                   paste("average +- SD (", round(std, 2), ")", sep=""),
                   paste("median (", round(me, 2), ")", sep="")), lty=2, col=c(2,1,3), lwd=2)
 

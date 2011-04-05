@@ -5,13 +5,15 @@
     to last base of second read of a read pair, and plots a histogram for all insert sizes.}
 
 \usage{
-insert.size.hist(readpairs, returnInserts = FALSE, main, xlab, ylab, breaks, col, ...)
+insert.size.hist(readpairs, returnInserts = FALSE, legendpos="topleft", main, xlab, ylab, breaks, col, ...)
 }
 
 \arguments{
   \item{readpairs}{\code{\link[IRanges:RangedData-class]{RangedData}} table containing positions
-      of read pairs, i.e. output of \code{\link{reads2pairs}}.}
+      of read pairs, i.e. output of \code{\link{reads2pairs}} (or the element \code{readpairs} from the
+      \code{\link{reads2pairs}} output in case single reads without matching pair were found).}
   \item{returnInserts}{if \code{TRUE}, the vector of read pair insert sizes is returned}
+  \item{legendpos}{position of the legend, e.g. 'topleft' or 'topright'}
   \item{main}{plot title}
   \item{xlab, ylab}{x- and y-axis labels}
   \item{breaks}{e.g. integer specifying the number of cells for the histogram, see \code{?hist}}

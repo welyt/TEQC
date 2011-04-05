@@ -116,7 +116,8 @@ is quite similar to \Rfunction{get.targets}. However, overlapping or identical r
 not merged. Furthermore, a column containing read identifiers can be specified with option
 \Rfunarg{idcol}. This is essential in case of paired-end data, when you want quality statistics
 to be done (also) on read pairs rather than on single reads. In this case the ID has to be the
-identifier of the read pair. Our example data was derived by paired-end sequencing,
+identifier of the read pair (i.e. the same unique ID for both reads of the pair). Our example data
+was derived by paired-end sequencing,
 so we keep the pair IDs in the resulting \Rclass{RangedData} object. The genomic positions in our bedfile containing
 the reads are 1-based, so we avoid coordinate shifting by setting \Rfunarg{zerobased} to \Rfunarg{FALSE}.
 
@@ -138,8 +139,14 @@ within a read pair and end at the last base of the respective second read. This 
 to the positions of the DNA molecule that was actually sequenced from both ends.
 The \Rfunarg{reads} table might also contain single reads (i.e. whose corresponding partners did
 not align to the reference). In this case a list of two \Rclass{RangedData} tables will be returned,
-the first one containing the original positions of the single reads without partners, and the other one containing the
-merged pairs positions.
+the first one containing the original positions of the single reads without partners (table \Robject{singleReads}),
+and the other one containing the merged pairs positions (table \Robject{readpairs}).
+The provided reads data might also contain cases where the two reads of a pair align to different chromosomes.
+Since for such read pairs a 'merging' does not make sense, they will be returned within the
+\Robject{singleReads} table. Further, for some pairs the respective reads might align very far apart
+within the same chromosome. If you wish to remove such reads, you can specify a value for option
+\Rfunarg{max.distance}. Reads with a larger distance (from start position of first read to end
+position of second read) will be added to table \Robject{singleReads}.
 
 <<reads2pairs>>=
 readpairs <- reads2pairs(reads)
