@@ -195,7 +195,7 @@ falling on each chromosome. For the reads, this is the fraction within the total
 In contrast, for the targets, the fraction of targeted bases on each chromosome is calculated.
 Since targets might strongly vary in length it is reasonable to account for the actual target \emph{sizes} instead
 of considering merely numbers of targets per chromosome. In this way you can compare directly if
-the amount of reads corresponds more or less to the amount of target on a certain chromosome (see figure \ref{chrom.barplot}).
+the amount of reads corresponds more or less to the amount of target on a certain chromosome (see figure \ref{chrom.barplot}).\\
 %The plot is more useful when there are targets only on some of the chromosomes, for which hence a high number of reads is expected.\\
 
 \noindent
@@ -307,6 +307,12 @@ the \Rfunarg{Offset} option was set the same in both \Rfunction{fraction.reads.t
 targets2 <- readsPerTarget(reads, targets2)
 targets2
 @
+
+The resulting \Rclass{RangedData} table can be converted to a data frame, and as such easily be
+written to a file, e.g. by \\
+
+\noindent
+\Rcode{> write.table(as.data.frame(targets2), file="target\_coverage.txt", sep="\textbackslash t", row.names=F, quote=F)}\\
 
 
 Talking about coverage, it is interesting to ask which fraction of target bases reach a coverage of at
