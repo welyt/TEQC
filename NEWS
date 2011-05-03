@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.1.0
+----------------------
+
+  o fix in 'reads2pairs': when the two reads of a read pair map to different chromosomes, they will be returned within the
+  'singleReads' element of the output (before function gave en error in case of such read pairs)
+  o added optional argument 'max.distance' to 'reads2pairs'; when the reads of a read pair are further apart than 'max.dist'
+  bases, they will be added to the 'singleReads' element of the output instead to the 'readpairs' element
+
+
+
 CHANGES IN VERSION 0.99.2
 ----------------------
 
