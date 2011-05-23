@@ -3,7 +3,7 @@
 Package: TEQC
 Type: Package
 Title: Quality control for target capture experiments
-Version: 1.1.1
+Version: 1.1.2
 Date: 2011-05-02
 Author: M. Hummel, S. Bonnin, E. Lowy, G. Roma
 Maintainer: Manuela Hummel <manuela.hummel@crg.es>
