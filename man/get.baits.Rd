@@ -38,7 +38,7 @@
 
 \examples{
 exptPath <- system.file("extdata", package="TEQC")
-baitsfile <- paste(exptPath, "ExampleSet_Baits.txt", sep="/")
+baitsfile <- file.path(exptPath, "ExampleSet_Baits.txt")
 baits <- get.baits(baitsfile, chrcol=3, startcol=4, endcol=5, seqcol=2)
 }
 

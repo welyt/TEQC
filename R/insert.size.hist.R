@@ -1,6 +1,10 @@
 insert.size.hist <-
 function(readpairs, returnInserts=FALSE, legendpos="topleft", main, xlab, ylab, breaks, col, ...){
 
+  # in case 'readpairs' contains also 'singleReads'
+  if(is.list(readpairs) & ("readpairs" %in% names(readpairs)))
+    readpairs <- readpairs$readpairs
+
   # insert sizes
   inserts <- width(readpairs)
 

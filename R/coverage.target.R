@@ -50,7 +50,7 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   names(covercounts.target) <- chr.targ
   
   # coverage average, SD and quartiles for all targeted bases
-  tmp <- as.numeric(unlist(covercounts.target))
+  tmp <- as.integer(unlist(covercounts.target))
   avg <- mean(tmp)
   std <- sd(tmp)
   qu <- quantile(tmp)

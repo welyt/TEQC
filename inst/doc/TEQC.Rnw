@@ -55,6 +55,40 @@ follow-up analysis like SNP detection.
 %------------------------------------------------------------------------------------------------
 %------------------------------------------------------------------------------------------------
 
+\section{Automated html Report}
+
+The fastest way to run TEQC quality analysis is to launch the html report generation.
+The main arguments for \Rfunction{TEQCreport} are tables containing positions of sequenced reads and of genomic targets,
+or information about how to read the respective data files.
+There are several other options for customization of the report. In especially, you can choose
+whether or not to produce certain figures or coverage wiggle files and whether the data should be
+treated as single- or paired-end data. Calculation-intensive R objects can also be saved
+as workspace, for further usage.
+With option \Rfunarg{destDir} you
+can specify the output folder, where all results will go and where you will find the index.html page
+of the html report. The parameters \Rfunarg{sampleName}, \Rfunarg{targetsName} and \Rfunarg{referenceName}
+simply allow to include information about the sample and experiment in the report.
+For details about the different steps, options and results of a TEQC analysis, it is recommended to
+read also the following sections of this documentation. \\
+
+\noindent
+\Rcode{> library(TEQC)\\
+\\
+> exptPath <- system.file("extdata", package="TEQC")\\
+> readsfile <- file.path(exptPath, "ExampleSet\_Reads.bed")\\
+> targetsfile <- file.path(exptPath, "ExampleSet\_Targets.bed")\\
+\\
+> TEQCreport(sampleName="Test Sample", \\
++						 targetsName="Human Exome", \\
++						 referenceName="Human Genome", \\
++         	 destDir="report", \\
++         	 reads=get.reads(readsfile, skip=0, idcol=4), \\
++ 	         targets=get.targets(targetsfile, skip=0), \\
++						 genome="hg19")}
+
+%------------------------------------------------------------------------------------------------
+%------------------------------------------------------------------------------------------------
+
 \section{Load Reads and Targets Data}
 
 The (minimum) input needed for the quality control analysis are two files
@@ -63,12 +97,16 @@ The (minimum) input needed for the quality control analysis are two files
 of the targeted regions, one genomic range per line. The targets might be custom designed or commercial solutions,
 e.g. for the capture of the whole human exome. The file does not have to be sorted with
 respect to genomic position.
-\item A bed file containing the genomic positions (chromosome, start, end)
+\item A bed or BAM
+file containing the genomic positions (chromosome, start, end)
 of sequenced reads aligned to a reference genome, one genomic range per line.
 In case of paired-end data an additional column with the read pair ID is suggested.
-This file format is very general and hence
+The bed file format is very general and hence
 the QC analysis is not limited to any sequencing platform or alignment tool.
 The file does not have to be sorted with respect to genomic position.
+The BAM file format is now quite standard in NGS analysis. The usage of bam files has
+the advantage that reading the data is much faster (using functionality of the
+\Rpackage{ShortRead} package) than with bed files.
 \end{itemize}
 
 The package includes a small example data set. First we load the target positions.
@@ -126,7 +164,14 @@ reads <- get.reads(paste(exptPath, "ExampleSet_Reads.bed", sep="/"), chrcol=1, s
 reads
 @
 
+Whenever BAM files are available, it is recommended to use those instead of bed files as input for \Rfunction{get.reads},
+while setting parameter \Rfunarg{filetype} to \Rfunarg{"bam"}. In this case, \Rfunction{get.reads} makes use
+of the \Rpackage{ShortRead} function \Rfunction{scanBam}, with flag option \Rfunarg{isUnmappedQuery=FALSE}.
+All other previously described options of \Rfunction{get.reads} are ignored, since genomic positions and read
+identifiers are taken automatically from the BAM file.  \\
 
+\noindent
+\Rcode{> reads <- get.reads("myBAM.bam", filetype="bam")}\\
 
 \vspace{0.5cm}
 \noindent {\bf Paired-end data}
@@ -153,6 +198,11 @@ readpairs <- reads2pairs(reads)
 readpairs
 @
 
+You may decide to use for all further analyses only "valid pairs", i.e. to exlude those reads that
+ended up in the \Robject{singleReads} table (in case there were any). This can be done e.g. in the following way \\
+
+\noindent
+\Rcode{> reads <- reads[!(reads\$ID \%in\% readpairs\$singleReads\$ID), , drop=TRUE]}\\
 
 Again, only for the case of paired-end data, we can visualize the read pair insert sizes,
 i.e. the distances from the start of read 1 to the end of read 2, respectively.
@@ -290,6 +340,10 @@ Coverage
 targets2 <- Coverage$targetCoverages
 @
 
+Note that coverage should {\it not} be calculated using the output of function \Rfunction{reads2pairs}
+in place of \Rfunarg{reads}, since the genomic ranges in that table span the whole region from the first
+to the second read of a pair. However, for the respective read insert there is no actual coverage,
+because only the ends of the original fragment were sequenced.\\
 
 A different measure for the per-target coverage would be to count the numbers of reads
 overlapping with each target. This can be calculated by the function \Rfunction{readsPerTarget}.

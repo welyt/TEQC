@@ -27,7 +27,8 @@ function(coverageAll, baits, returnBaitValues=FALSE, linecol="darkred", lwd, xla
   }
 
   # average coverage for bait-covered bases
-  avgcov <- mean(as.numeric(unlist(covercounts.baits)))
+#  avgcov <- mean(as.numeric(unlist(covercounts.baits)))
+  avgcov <- mean(as.integer(unlist(covercounts.baits)))
 
   # normalized per-bait coverage
   baitcov.norm <- baitcov / avgcov

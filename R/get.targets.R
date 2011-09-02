@@ -1,7 +1,13 @@
 get.targets <-
 function(targetsfile, chrcol=1, startcol=2, endcol=3, zerobased=TRUE, sep="\t", skip=1, header=FALSE, ...){
 
-  dat <- read.delim(targetsfile, sep=sep, as.is=TRUE, skip=skip, header=header, ...)
+  # read only the required columns
+  n <- max(count.fields(targetsfile, sep=sep))
+  colclasses <- rep("NULL", n)
+  colclasses[chrcol] <- "character"
+  colclasses[c(startcol, endcol)] <- "integer"
+  
+  dat <- read.delim(targetsfile, colClasses=colclasses, sep=sep, skip=skip, header=header, ...)
 
   # make IRanges object
   ir <- IRanges(start=dat[,startcol], end=dat[,endcol])

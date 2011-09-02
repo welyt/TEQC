@@ -13,6 +13,10 @@ multfun <- function(x){
 duplicates.barplot <-
 function(reads, targets, returnDups=FALSE, truncateX, col=c("red","lightblue"), xlab, ylab, ylim, ...){
 
+  # in case 'reads' is output of 'reads2pairs' and contains also 'singleReads'
+  if(is.list(reads) & ("readpairs" %in% names(reads)))
+    reads <- reads$readpairs
+
   # which reads are on target
   on.target <- reads %in% targets
   reads.on <- reads[on.target,]

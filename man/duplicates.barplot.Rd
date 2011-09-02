@@ -52,9 +52,9 @@ duplicates.barplot(reads, targets, returnDups=FALSE, truncateX, col=c("red","lig
 \examples{
 ## get reads and targets
 exptPath <- system.file("extdata", package="TEQC")
-readsfile <- paste(exptPath, "ExampleSet_Reads.bed", sep="/")
+readsfile <- file.path(exptPath, "ExampleSet_Reads.bed")
 reads <- get.reads(readsfile, idcol=4, skip=0)
-targetsfile <- paste(exptPath, "ExampleSet_Targets.bed", sep="/")
+targetsfile <- file.path(exptPath, "ExampleSet_Targets.bed")
 targets <- get.targets(targetsfile, skip=0)
 
 ## duplicates barplot for single reads

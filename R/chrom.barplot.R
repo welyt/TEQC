@@ -1,6 +1,10 @@
 chrom.barplot <-
 function(reads, targets, col=c("darkgreen", "orange"), ylab, legendpos="topright", ...){
 
+  # in case 'reads' is output of 'reads2pairs' and contains also 'singleReads'
+  if(is.list(reads) & ("readpairs" %in% names(reads)))
+    reads <- reads$readpairs
+
   tab0 <- table(space(reads))
   chrs <- names(tab0)
   

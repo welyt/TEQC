@@ -6,7 +6,7 @@ function(x){
   r <- x$ranges[o,]
 
   # split ranges table into one for 1st and one for 2nd read
-  x.split <- split(r, rep(1:2, length.out=length(r)))  
+  x.split <- split(r, rep(1:2, length.out=length(r)))  # !!
 
   # merge the tables such that each line starts with start position of first read
   #   of the pair and ends with end position of second read
@@ -29,23 +29,38 @@ function(reads, max.distance){
 
   if(ncol(reads) == 0)
     stop("a 'values' column (first column) with read pair IDs is needed in the 'reads' RangedData table")
+
+  # check if there are as many 1st as 2nd reads
+  #id.all <- sapply(values(reads), nrow)
+  #id.pair <- sapply(values(reads), function(x) length(unique(x[,1])))
+  #singlereads <- any(id.all / id.pair != 2)
+
+  # if there are single reads, give them back separately
+  #if(singlereads){
+    #ID <- unlist(values(reads))[,1]
+    #dups <- duplicated(ID)
+    #nondups <- !(ID %in% ID[dups])
+    #print(paste("there were", sum(nondups), "single reads found without matching second read"))
+    #res <- list(singleReads=reads[nondups,,drop=TRUE])
+    #reads <- reads[!nondups,,drop=TRUE]
+  #}
   
   # check if there are as many 1st as 2nd reads on each chromosome
   # -> single reads or reads where pairs matching different chromosomes will be removed
   ID <- values(reads)[,1]
   dups <- sapply(ID, function(x) duplicated(x))
-  singlereads <- any(sapply(dups, function(x) sum(x) != length(x)/2))   
+  singlereads <- any(sapply(dups, function(x) sum(x) != length(x)/2))    # !!
 
   # give back single reads separately
   if(singlereads){
     ID <- unlist(ID)
-    ID2 <- ID[unlist(dups)]     
+    ID2 <- ID[unlist(dups)]     # !!
 
-    # check if some IDs are not unique to one pair  
-    if(any(duplicated(ID2)))                        
-      stop("read pair IDs do not seem to be unique") 
+    # check if some IDs are not unique to one pair  # !!
+    if(any(duplicated(ID2)))                        # !!
+      stop("read pair IDs do not seem to be unique") # !!
     
-    nondups <- Rle(!(ID %in% ID2))     
+    nondups <- Rle(!(ID %in% ID2))     # !!
     print(paste("there were", sum(nondups), "reads found without matching second read, or whose second read matches to a different chromosome"))
     res <- list(singleReads=reads[which(nondups),,drop=TRUE])
     reads <- reads[which(!nondups),,drop=TRUE]

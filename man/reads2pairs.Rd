@@ -51,7 +51,7 @@ reads2pairs(reads, max.distance)
 
 \examples{
 exptPath <- system.file("extdata", package="TEQC")
-readsfile <- paste(exptPath, "ExampleSet_Reads.bed", sep="/")
+readsfile <- file.path(exptPath, "ExampleSet_Reads.bed")
 reads <- get.reads(readsfile, idcol=4, skip=0)
 readpairs <- reads2pairs(reads)
 }

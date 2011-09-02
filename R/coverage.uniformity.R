@@ -15,7 +15,7 @@ function(coveragelist, addlines=TRUE, add=FALSE, xlab, ylab, xlim, ylim, col, lw
 
   # graphical parameters
   if(missing(xlab)) xlab <- "Normalized coverage"
-  if(missing(ylab)) ylab <- "Fraction of bases"
+  if(missing(ylab)) ylab <- "Fraction of target bases"
   if(missing(xlim)) xlim <- 0:1
   if(missing(ylim)) ylim <- 0:1
   if(missing(col)) col <- "darkred"

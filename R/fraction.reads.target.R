@@ -1,6 +1,10 @@
 fraction.reads.target <-
 function(reads, targets, Offset=0, mappingReads=FALSE){
 
+  # in case 'reads' is output of 'reads2pairs' and contains also 'singleReads'
+  if(is.list(reads) & ("readpairs" %in% names(reads)))
+    reads <- reads$readpairs
+
   # add Offset if required
   targets <- offsetfun(Offset=Offset, targets=targets)
 

@@ -19,7 +19,7 @@ citEntry(entry="Article",
     author = personList(as.person("M. Hummel"), as.person("S. Bonnin"),
 	as.person("E. Lowy"), as.person("G. Roma")),
     journal = "Bioinformatics",
-    number = doi: 10.1093/bioinformatics/btr122,
+    number = "doi: 10.1093/bioinformatics/btr122",
     pages = "",
     year = 2011,
     textVersion =

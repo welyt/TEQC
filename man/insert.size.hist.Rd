@@ -37,7 +37,7 @@ insert.size.hist(readpairs, returnInserts = FALSE, legendpos="topleft", main, xl
 \examples{
 ## get reads
 exptPath <- system.file("extdata", package="TEQC")
-readsfile <- paste(exptPath, "ExampleSet_Reads.bed", sep="/")
+readsfile <- file.path(exptPath, "ExampleSet_Reads.bed")
 reads <- get.reads(readsfile, idcol=4, skip=0)
 
 ## merge to read pairs

@@ -34,7 +34,7 @@
 
 \examples{
 exptPath <- system.file("extdata", package="TEQC")
-targetsfile <- paste(exptPath, "ExampleSet_Targets.bed", sep="/")
+targetsfile <- file.path(exptPath, "ExampleSet_Targets.bed")
 targets <- get.targets(targetsfile, skip=0)
 }
 
