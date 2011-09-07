@@ -1,6 +1,6 @@
-import(IRanges, Rsamtools, Biobase, hwriter)
+import(IRanges, Rsamtools, hwriter)
 
-#importFrom(Biobase, addVigs2WinMenu, copySubstitute)
+importFrom(Biobase, addVigs2WinMenu, copySubstitute)
 #importFrom(hwriter, hwrite, hwriteImage)
 
 export(chrom.barplot,
