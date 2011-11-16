@@ -1,4 +1,4 @@
-import(IRanges, Rsamtools, hwriter)
+import(methods, BiocGenerics, IRanges, Rsamtools, hwriter)
 
 importFrom(Biobase, addVigs2WinMenu, copySubstitute)
 #importFrom(hwriter, hwrite, hwriteImage)
