@@ -123,7 +123,8 @@ probes, which might be highly overlapping due to tiling, can be used as \Rfunarg
 library(TEQC)
 
 exptPath <- system.file("extdata", package="TEQC")
-targets <- get.targets(targetsfile=paste(exptPath, "ExampleSet_Targets.bed", sep="/"), chrcol=1, startcol=2, endcol=3, skip=0)
+targets <- get.targets(targetsfile=paste(exptPath, "ExampleSet_Targets.bed", sep="/"), 
+	chrcol=1, startcol=2, endcol=3, skip=0)
 targets
 @
 
@@ -160,7 +161,8 @@ so we keep the pair IDs in the resulting \Rclass{RangedData} object. The genomic
 the reads are 1-based, so we avoid coordinate shifting by setting \Rfunarg{zerobased} to \Rfunarg{FALSE}.
 
 <<reads>>=
-reads <- get.reads(paste(exptPath, "ExampleSet_Reads.bed", sep="/"), chrcol=1, startcol=2, endcol=3, idcol=4, zerobased=F, skip=0)
+reads <- get.reads(paste(exptPath, "ExampleSet_Reads.bed", sep="/"), 
+	chrcol=1, startcol=2, endcol=3, idcol=4, zerobased=F, skip=0)
 reads
 @
 

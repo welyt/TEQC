@@ -13,8 +13,9 @@ function(coverageAll, baits, returnBaitValues=FALSE, linecol="darkred", lwd, xla
   # get per-bait coverage
   covercounts.baits <- RleList()
   baitcov <- NULL
-  for(chr in unique(space(baits))){
-    cov.chr <- coverageAll[[chr]]
+#  for(chr in unique(space(baits))){   !!
+  for(chr in names(baits)){
+     cov.chr <- coverageAll[[chr]]
     ir.chr <- ranges(baits)[[chr]]
     tmp <- lapply(ir.chr, function(x) seqselect(cov.chr, x))
     avgcov <- sapply(tmp, mean)
