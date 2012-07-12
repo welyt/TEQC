@@ -10,9 +10,11 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   max.read <- end(range(reads))
   noread <- setdiff(chr.targ, names(max.read))
   sel <- setdiff(chr.targ, noread)
+
+  # -> after bug fix in IRanges (-> version 1.12.2) it works fine again
   tmp <- max.read[sel] < max.targ[sel]
   max.read[sel][tmp] <- max.targ[sel][tmp]
-  
+
   # coverage for each base
   covercounts.all <- coverage(reads, width=max.read)
 
@@ -41,14 +43,14 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
         targetcov <- c(targetcov, avgcov)
         targetSD <- c(targetSD, sdcov)
       }
-      
+
       # coverage per base
       cov.chr <- do.call(c, tmp)
       covercounts.target <- c(covercounts.target, RleList(cov.chr))
     }
   }
-  names(covercounts.target) <- chr.targ
-  
+#  names(covercounts.target) <- chr.targ   # !!
+
   # coverage average, SD and quartiles for all targeted bases
   tmp <- as.integer(unlist(covercounts.target))
   avg <- mean(tmp)
@@ -63,9 +65,11 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
     res <- c(res, list(targetCoverages=targets))
   }
 
-  if(perBase)
+  if(perBase){
+    names(covercounts.target) <- chr.targ   #!!
     res <- c(res, list(coverageAll=covercounts.all, coverageTarget=covercounts.target))
-
+  }
+  
   return(res)
 }
 
