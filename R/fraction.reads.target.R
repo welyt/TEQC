@@ -9,7 +9,7 @@ function(reads, targets, Offset=0, mappingReads=FALSE){
   targets <- offsetfun(Offset=Offset, targets=targets)
 
   # overlaps between reads and targets (of at least 1 base)
-  OL <- reads %in% targets
+  OL <- overlapsAny(reads, targets)
 
   # fraction of reads / read pairs mapping to targets
   res <- sum(sum(OL)) / nrow(reads)
