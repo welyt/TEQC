@@ -123,8 +123,7 @@ probes, which might be highly overlapping due to tiling, can be used as \Rfunarg
 library(TEQC)
 
 exptPath <- system.file("extdata", package="TEQC")
-targets <- get.targets(targetsfile=paste(exptPath, "ExampleSet_Targets.bed", sep="/"), 
-	chrcol=1, startcol=2, endcol=3, skip=0)
+targets <- get.targets(targetsfile=paste(exptPath, "ExampleSet_Targets.bed", sep="/"), chrcol=1, startcol=2, endcol=3, skip=0)
 targets
 @
 
@@ -161,8 +160,7 @@ so we keep the pair IDs in the resulting \Rclass{RangedData} object. The genomic
 the reads are 1-based, so we avoid coordinate shifting by setting \Rfunarg{zerobased} to \Rfunarg{FALSE}.
 
 <<reads>>=
-reads <- get.reads(paste(exptPath, "ExampleSet_Reads.bed", sep="/"), 
-	chrcol=1, startcol=2, endcol=3, idcol=4, zerobased=F, skip=0)
+reads <- get.reads(paste(exptPath, "ExampleSet_Reads.bed", sep="/"), chrcol=1, startcol=2, endcol=3, idcol=4, zerobased=F, skip=0)
 reads
 @
 
@@ -781,7 +779,7 @@ toLatex(sessionInfo())
 \section{References}
 
 \noindent Hummel M, Bonnin S, Lowy E, Roma G. TEQC: an R-package for quality control in
-target capture experiments. Bioinformatics 2011; doi: 10.1093/bioinformatics/btr122.\\
+target capture experiments. Bioinformatics 2011; 27(9): 1316-1317.\\
 
 \noindent Bainbridge MN, Wang M, Burgess DL, Kovar C, Rodesch MJ, D'Ascenzo M, Kitzman J, Wu Y-Q, Newsham I, Richmond TA, Jeddeloh JA, Muzny D, Albert TJ, Gibbs RA.
 Whole exome capture in solution with 3 Gbp of data.

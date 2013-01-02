@@ -8,10 +8,16 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   max.targ <- end(range(targets))
   chr.targ <- names(max.targ)
   max.read <- end(range(reads))
-  noread <- setdiff(chr.targ, names(max.read))
-  sel <- setdiff(chr.targ, noread)
 
-  # -> after bug fix in IRanges (-> version 1.12.2) it works fine again
+  # if in reads there appears a chromosome but there is actually no read (can happen with BAM files)
+  w <- sapply(max.read, length) == 0
+  reads <- reads[!w]
+  max.read <- max.read[!w]
+
+  # if on a chromosome there are targets but no reads
+  noread <- setdiff(chr.targ, names(max.read))
+
+  sel <- setdiff(chr.targ, noread)
   tmp <- max.read[sel] < max.targ[sel]
   max.read[sel][tmp] <- max.targ[sel][tmp]
 
@@ -49,7 +55,6 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
       covercounts.target <- c(covercounts.target, RleList(cov.chr))
     }
   }
-#  names(covercounts.target) <- chr.targ   # !!
 
   # coverage average, SD and quartiles for all targeted bases
   tmp <- as.integer(unlist(covercounts.target))
@@ -66,7 +71,7 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   }
 
   if(perBase){
-    names(covercounts.target) <- chr.targ   #!!
+    names(covercounts.target) <- chr.targ
     res <- c(res, list(coverageAll=covercounts.all, coverageTarget=covercounts.target))
   }
   

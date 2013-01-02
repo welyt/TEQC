@@ -1,3 +1,9 @@
+CHANGES IN VERSION 2.7.2
+----------------------
+
+  o bug fix in 'coverage.target' (chromosomes without any read but appearing in the BAM file header were a problem)
+
+
 CHANGES IN VERSION 2.0.0
 ----------------------
 

@@ -1,8 +1,10 @@
+
+
 Package: TEQC
 Type: Package
 Title: Quality control for target capture experiments
-Version: 2.7.1
-Date: 2011-09-02
+Version: 2.7.2
+Date: 2013-01-02
 Author: M. Hummel, S. Bonnin, E. Lowy, G. Roma
 Maintainer: Manuela Hummel <manuela.hummel@crg.es>
 Description: Target capture experiments combine hybridization-based (in solution or on microarrays)
@@ -11,8 +13,8 @@ Description: Target capture experiments combine hybridization-based (in solution
 	quality of the target enrichment process, like specificity and sensitivity of the capture, 
 	per-target read coverage and so on. 
 biocViews: QualityControl, Microarray, HighThroughputSequencing, Bioinformatics, Genetics
-Depends: methods, BiocGenerics (>= 0.1.0), IRanges (>= 1.13.5), Rsamtools, hwriter
-Imports: Biobase (>= 2.15.1)
+Depends: IRanges, Rsamtools, hwriter
+Imports: Biobase
 License: GPL (>= 2)
 LazyLoad: yes
 
