@@ -4,7 +4,7 @@
 \description{Histogram and cumulative density of target base coverages}
 
 \usage{
-coverage.hist(coverageTarget, col.hist = "lightblue", col.line = "orange", covthreshold, breaks = "Sturges", xlab, ylab, main, lwd, ...)
+coverage.hist(coverageTarget, col.hist = "lightblue", col.line = "orange", covthreshold, outline = FALSE, breaks = "Sturges", xlab, ylab, main, lwd, ...)
 }
 
 \arguments{
@@ -14,6 +14,7 @@ coverage.hist(coverageTarget, col.hist = "lightblue", col.line = "orange", covth
   \item{col.line}{color of the cumulative density line}
   \item{covthreshold}{indicates with dashed vertical and horizontal lines, which fraction of bases
          has a coverage of at least \code{covthreshold}; if missing, no dashed lines are drawn}
+  \item{outline}{if \code{FALSE}, outliers (according to \code{\link{boxplot.stats}}) are removed before plotting.}
   \item{breaks}{number of cells for the histogram, or string naming an algorithm to compute
          the number of cells, or function to compute the number of cells,
          or vector giving the breakpoints between histogram cells (see \code{?hist}) but the

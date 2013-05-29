@@ -5,7 +5,7 @@
     to last base of second read of a read pair, and plots a histogram for all insert sizes.}
 
 \usage{
-insert.size.hist(readpairs, returnInserts = FALSE, legendpos="topleft", main, xlab, ylab, breaks, col, ...)
+insert.size.hist(readpairs, returnInserts = FALSE, legendpos="topleft", outline=FALSE, main, xlab, ylab, breaks, col, ...)
 }
 
 \arguments{
@@ -14,6 +14,8 @@ insert.size.hist(readpairs, returnInserts = FALSE, legendpos="topleft", main, xl
       \code{\link{reads2pairs}} output in case single reads without matching pair were found).}
   \item{returnInserts}{if \code{TRUE}, the vector of read pair insert sizes is returned}
   \item{legendpos}{position of the legend, e.g. 'topleft' or 'topright'}
+  \item{outline}{if \code{FALSE}, outliers (according to \code{\link{boxplot.stats}}) are removed before plotting.
+  If \code{returnInserts=TRUE}, those outliers are still included in the output.}
   \item{main}{plot title}
   \item{xlab, ylab}{x- and y-axis labels}
   \item{breaks}{e.g. integer specifying the number of cells for the histogram, see \code{?hist}}

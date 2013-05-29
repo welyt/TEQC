@@ -5,7 +5,7 @@
 \usage{
 TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQCreport",
             reads = get.reads(), targets = get.targets(), Offset = 0, pairedend = FALSE, genome = c(NA, "hg19", "hg18"),
-            genomesize, CovUniformityPlot = FALSE, CovTargetLengthPlot = FALSE, CovGCPlot = FALSE,
+            genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot = FALSE, CovTargetLengthPlot = FALSE, CovGCPlot = FALSE,
             duplicatesPlot = FALSE, baits = get.baits(), WigFiles = FALSE, saveWorkspace = FALSE)
 }
 
@@ -28,6 +28,8 @@ TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQ
       leave this option empty ('NA') and specify the genome size with option 'genomesize'}
   \item{genomesize}{integer: specify the total genome size manually. If 'genomesize' is given,
       option 'genome' will be ignored.}
+  \item{k}{integer vector of \code{k}-values for which to show fraction
+        of target bases with coverage >= \code{k} in 'Sensitivity' table. Passed to \code{\link{covered.k}}}
   \item{CovUniformityPlot}{if \code{TRUE}, a coverage uniformity plot is created,
         see \code{\link{coverage.uniformity}}}
   \item{CovTargetLengthPlot}{if \code{TRUE}, coverage vs target length plots are created,

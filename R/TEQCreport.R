@@ -2,10 +2,12 @@
 # html report generation
 
 # get results values and plots
+# !! added parameter k
 TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir="TEQCreport",
             reads=get.reads(), targets=get.targets(), Offset=0, pairedend=FALSE, genome=c(NA, "hg19", "hg18"),
-            genomesize, CovUniformityPlot=FALSE, CovTargetLengthPlot=FALSE, CovGCPlot=FALSE,
+            genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot=FALSE, CovTargetLengthPlot=FALSE, CovGCPlot=FALSE,
             duplicatesPlot=FALSE, baits=get.baits(), WigFiles=FALSE, saveWorkspace=FALSE){
+# !!
 # sampleName, targetsName, referenceName: names that can be chosen by user and will be placed on top of html report
 # destDir: output directory
 # reads, targets: reads/targets RangedData tables or commands how to read them
@@ -110,7 +112,9 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
     targetcov <- rbind(apply(targetcov[1:20,], 2, as.character), "...")
     
   # sensitivity
-  sensi <- round(covered.k(Coverage$coverageTarget) * 100, 2)
+# !! added parameter k
+  sensi <- round(covered.k(Coverage$coverageTarget, k=k) * 100, 2)
+# !!
   N <- paste(">=", names(sensi), "X", sep="")
   sensi <- paste(sensi, "%", sep="")
   names(sensi) <- N
