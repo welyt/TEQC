@@ -9,7 +9,6 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   chr.targ <- names(max.targ)
   max.read <- end(range(reads))
 
-  # if in reads there appears a chromosome but there is actually no read (can happen with BAM files)
   w <- sapply(max.read, length) == 0
   reads <- reads[!w]
   max.read <- max.read[!w]
@@ -36,8 +35,11 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
   # restrict to target bases
   covercounts.target <- RleList()
   targetcov <- targetSD <- NULL
-  for(chr in names(covercounts.all)){
-    if(chr %in% chr.targ){
+
+#!! BUG fix
+#  for(chr in names(covercounts.all)){  -> chr's don't come in order of chr.targ (when reads come from bam file)
+#    if(chr %in% chr.targ){             -> avgCoverage, coverageSD and coverageTarget outputs are wrong !!
+   for(chr in chr.targ){
       cov.chr <- covercounts.all[[chr]]
       ir.chr <- ranges(targets)[[chr]]
       tmp <- lapply(ir.chr, function(x) seqselect(cov.chr, x))
@@ -53,7 +55,7 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
       # coverage per base
       cov.chr <- do.call(c, tmp)
       covercounts.target <- c(covercounts.target, RleList(cov.chr))
-    }
+#    }
   }
 
   # coverage average, SD and quartiles for all targeted bases
