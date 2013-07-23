@@ -48,17 +48,17 @@ TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQ
 }
 
 
-\details{TEQC analysis is preformed and files for an html report are created in \code{destDir}.
+\details{TEQC analysis is performed and files for an html report are created in \code{destDir}.
         The report can be viewed by opening \code{destDir}/index.html in a web browser. Images are saved in
         \code{destDir}/image. Wiggle files (in case \code{WigFiles = TRUE}) are saved in
-        \code{destDir}/wiggle. The table with coverage values per target and the R workspace
+        \code{destDir}/wiggle. A table with general target coverage statistics, a table with average coverage values per target, a table with cumulative fractions of targeted bases with certain coverage and the R workspace
         containing R objects for potential further analysis (in case \code{saveWorkspace = TRUE})
         are saved in \code{destDir}.}
 
 \value{The function is invoked for its side effect}
 
 \references{Hummel M, Bonnin S, Lowy E, Roma G. TEQC: an R-package for quality control in
-    target capture experiments. Bioinformatics 2011; doi: 10.1093/bioinformatics/btr122
+    target capture experiments. Bioinformatics 2011; 27(9):1316-1317
 }
 
 \author{Manuela Hummel \email{manuela.hummel@crg.es}}

@@ -109,7 +109,7 @@ function(coveragelist, normalized=TRUE, plotfrac=0.001, seed=123, labels, main, 
   if(!all(sapply(coverages, function(x) identical(sapply(x, length), L))))
     stop("elements of 'covlist' do not seem to be coverages for the same targets (there are different numbers of target positions for different samples)")
 
-  coverages <- lapply(coverages, unlist)
+  coverages <- lapply(coverages, unlist, use.names=FALSE)
 
   # normalized coverages
   if(normalized){

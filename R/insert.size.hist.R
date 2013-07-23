@@ -28,7 +28,10 @@ function(readpairs, returnInserts=FALSE, legendpos="topleft", outline=FALSE, mai
   # if outline=F, remove "outliers" (according to boxplot.stats) before plotting
   if(!outline){
     x.out <- boxplot.stats(inserts)$out
-    x.out <- min(x.out[x.out > m])
+    if(any(x.out > m))
+      x.out <- min(x.out[x.out > m])
+    else
+      x.out <- Inf
     inserts2 <- inserts[inserts < x.out]
   }
   else {

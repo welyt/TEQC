@@ -6,7 +6,7 @@ function(coveragelist, addlines=TRUE, add=FALSE, xlab, ylab, xlim, ylim, col, lw
 
   # normalize per-base coverages by mean coverage
   covercounts <- coveragelist$coverageTarget
-  covercounts <- unlist(covercounts)
+  covercounts <- unlist(covercounts, use.names=FALSE)
   covercounts.norm <- covercounts / coveragelist$avgTargetCoverage
 
   # cumulative fraction of bases per normalized coverage

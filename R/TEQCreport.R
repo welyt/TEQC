@@ -2,18 +2,17 @@
 # html report generation
 
 # get results values and plots
-# !! added parameter k
 TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir="TEQCreport",
             reads=get.reads(), targets=get.targets(), Offset=0, pairedend=FALSE, genome=c(NA, "hg19", "hg18"),
             genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot=FALSE, CovTargetLengthPlot=FALSE, CovGCPlot=FALSE,
             duplicatesPlot=FALSE, baits=get.baits(), WigFiles=FALSE, saveWorkspace=FALSE){
-# !!
 # sampleName, targetsName, referenceName: names that can be chosen by user and will be placed on top of html report
 # destDir: output directory
 # reads, targets: reads/targets RangedData tables or commands how to read them
-# Offset: option used in various functions to add ‘Offset’ bases on both sides of targeted regions
+# Offset: option used in various functions to add ?Offset? bases on both sides of targeted regions
 # pairedend: are the data paired-end reads?
 # genome, genomesize: options as needed for 'fraction.target()'
+# k: parameter for 'covered.k()'
 # CovUniformityPlot, CovTargetLengthPlot, CovGCPlot, duplicatesPlot: shall corresponding plots be created?
 # baits: baits table or command how to read it
 # WigFiles: shall wiggle files be created
@@ -97,8 +96,12 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
   # coverage
   print("calculating coverage...")
   Coverage <- coverage.target(reads, targets, Offset=Offset)
-  avgcov <- data.frame(round(Coverage$avgTargetCoverage, 2), round(Coverage$targetCoverageSD, 2),
-                matrix(Coverage$targetCoverageQuantiles, ncol=5))
+#!! save statisitics also in separate table for later use in multiTEQCreport.R
+  stats <- c(fr, Coverage$avgTargetCoverage, Coverage$targetCoverageSD, Coverage$targetCoverageQuantiles)
+  names(stats) <- c("fractionReadsOnTarget", "avgCoverage", "coverageSD", "coverageMin", "coverageQuartile1", "medianCoverage", "coverageQuartile3", "coverageMax")
+  write.table(data.frame(stats), file=file.path(destDir, "onTargetStatistics.txt"), sep="\t", col.names=FALSE, quote=FALSE)
+#!!
+  avgcov <- data.frame(round(Coverage$avgTargetCoverage, 2), round(Coverage$targetCoverageSD, 2), matrix(Coverage$targetCoverageQuantiles, ncol=5))
   names(avgcov) <- c("avgTargetCoverage", "targetCoverageSD", paste(names(Coverage$targetCoverageQuantiles), "quantile"))
 
   # coverage per target
@@ -112,9 +115,13 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
     targetcov <- rbind(apply(targetcov[1:20,], 2, as.character), "...")
     
   # sensitivity
-# !! added parameter k
-  sensi <- round(covered.k(Coverage$coverageTarget, k=k) * 100, 2)
-# !!
+#!! save sensitivity table for later use in multiTEQCreport.R
+  #sensi <- round(covered.k(Coverage$coverageTarget, k=k) * 100, 2)
+  sensi0 <- covered.k(Coverage$coverageTarget, k=k)
+  sensi <- round(sensi0 * 100, 2)
+#  sensi0 <- data.frame(coverage=names(sensi0), fractionTargetBases=sensi0)
+#  write.table(sensi0, file=file.path(destDir, "sensitivity.txt"), sep="\t", row.names=FALSE, quote=FALSE)
+#!!
   N <- paste(">=", names(sensi), "X", sep="")
   sensi <- paste(sensi, "%", sep="")
   names(sensi) <- N
@@ -212,8 +219,6 @@ make.report <- function(destDir, values, pairedend, CovUniformityPlot, CovTarget
   sections <- system.file("template", fls, package="TEQC")
    
   # cssFile: html settings template, QA.css template file taken from ShortRead package in inst/template
-#    if (length(cssFile) != 1L || is.null(names(cssFile)))
-#        stop("UserArgumentMismatch", "'%s' must be named character(1)", "cssFile"))
   cssFile <- c(QA.css=system.file("template", "QA.css", package="TEQC"))
   htmlFile <- file.path(destDir, "index.html")
   biocFile <- "bioclogo-small.jpg"
@@ -237,21 +242,15 @@ make.report <- function(destDir, values, pairedend, CovUniformityPlot, CovTarget
 
 # create jpeg and pdf figures and put them into report
 html_img <- function(dir, file, fig, ...){
-#    if (is.null(fig))
-#        return(hwrite("Not available."))            # function from hwriter
     jpegFile <- paste(file, "jpg", sep=".")
     pdfFile <- paste(file, "pdf", sep=".")
     imgDir <- file.path(dir, "image")
-#    if (!file.exists(imgDir))
-#        dir.create(imgDir)
 
     jpeg(file.path(imgDir, jpegFile), ...)
-#    print(fig)
     fig
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)    # pdf file is always empty!?!
-#    print(fig)
     fig                                     # seems that only one device can be printed usefully like that...
     dev.off()
 
@@ -284,8 +283,11 @@ htmlCoverageHist <- function(dir, coverageTarget, ...){
     imgDir <- file.path(dir, "image")
 
     jpeg(file.path(imgDir, jpegFile))
-    coverage.hist(coverageTarget, ...)
+#!! save cumulative sum of target base fraction with coverage x -> sensitivity
+    sensi <- .coverage.hist(coverageTarget, ...)
     dev.off()
+    write.table(sensi, file=file.path(dir, "sensitivity.txt"), sep="\t", row.names=FALSE, quote=FALSE)
+#!!
 
     pdf(file.path(imgDir, pdfFile))
     coverage.hist(coverageTarget, ...)
@@ -381,133 +383,4 @@ htmlDuplicatesBarplot <- function(dir, reads, targets, ...){
 
 
 
-
-#######################################
-# from ShortRead package
-
-if(0){
-
-
-# from report.R
-
-.report_html_do <-
-    function(destDir, sections, values,
-             cssFile=c(QA.css=system.file("template", "QA.css",     # inst/template folder with QA.css and html template files
-                                          package="ShortRead")),
-             ...)
-{
-    if (length(cssFile) != 1L || is.null(names(cssFile)))
-        .throw(SRError("UserArgumentMismatch",                # special ShortRead functions, see AllGenerics.R
-                        "'%s' must be named character(1)",
-                        "cssFile"))
-    htmlFile <- file.path(destDir, "index.html")
-    biocFile <- "bioclogo-small.jpg"
-    values <-
-        c(list(CSS=names(cssFile), DATE=date(),
-               VERSION=packageDescription("ShortRead")$Version),
-          values)
-    toConn <- file(htmlFile, "w")
-    for (sec in sections) {
-        fromConn <- file(sec, open="r")
-        copySubstitute(sec, toConn, values)       # function from Biobase
-        close(fromConn)
-    }
-    close(toConn)
-    file.copy(cssFile, file.path(destDir, names(cssFile)))
-    file.copy(system.file("template", "image", biocFile,
-                          package="ShortRead"),
-              file.path(destDir, "image", biocFile))
-    htmlFile
-}
-
-.html_NA <- function() "<pre>NA</pre>"
-
-.html_img <-
-    function(dir, file, fig, ...)
-{
-    if (is.null(fig))
-        return(hwrite("Not available."))            # function from hwriter
-    jpegFile <- paste(file, "jpg", sep=".")
-    pdfFile <- paste(file, "pdf", sep=".")
-    imgDir <- file.path(dir, "image")
-    if (!file.exists(imgDir))
-        dir.create(imgDir)
-
-    jpeg(file.path(imgDir, jpegFile), ...)
-    print(fig)
-    dev.off()
-
-    pdf(file.path(imgDir, pdfFile), ...)
-    print(fig)
-    dev.off()
-
-    hwriteImage(file.path(".", "image", jpegFile),          # function from hwriter
-                link=file.path(".", "image", pdfFile))
-}
-
-.htmlReadQuality <-
-    function(dir, file, qa, type="read", ...)
-{
-    df <- qa[["readQualityScore"]]
-    .html_img(dir, file,
-              .plotReadQuality(df[df$type==type,]),
-              ...)
-}
-
-.htmlReadOccur <-
-    function(dir, file, qa, type="read", ...)
-{
-    df <- qa[["sequenceDistribution"]]
-    .html_img(dir, file,
-              .plotReadOccurrences(df[df$type==type,], cex=.5),
-              ...)
-}
-
-
-# from methods-FastqQA.R
-
-.report_html_ShortReadQA <-
-    function(x, dest, type, ...)
-{
-    qa <- x
-    dir.create(dest, recursive=TRUE)
-    fls <- c("0000-Header.html", "1000-Overview.html",
-             "2000-RunSummary.html", "3000-ReadDistribution.html",
-             "4000-CycleSpecific.html",
-             "9000-AdapterContamination.html", "9999-Footer.html")
-    sections <- system.file("template", fls, package="ShortRead")
-    perCycle <- qa[["perCycle"]]
-    values <-
-        list(PPN_COUNT=hwrite(
-               .ppnCount(qa[["readCounts"]]),    # -> all those functions are in qa_utilities.R
-               border=NULL),
-             BASE_CALL_COUNT=hwrite(
-               .df2a(qa[["baseCalls"]] / rowSums(qa[["baseCalls"]])),
-               border=NULL),
-             READ_QUALITY_FIGURE=.htmlReadQuality(
-               dest, "readQuality", qa),
-             READ_OCCURRENCES_FIGURE=.htmlReadOccur(
-               dest, "readOccurences", qa),
-             FREQUENT_SEQUENCES_READ=hwrite(
-               .freqSequences(qa, "read"),
-               border=NULL),
-             FREQUENT_SEQUENCES_FILTERED=.html_NA(),
-             FREQUENT_SEQUENCES_ALIGNED=.html_NA(),
-             CYCLE_BASE_CALL_FIGURE=.html_img(
-               dest, "perCycleBaseCall",
-               .plotCycleBaseCall(perCycle$baseCall)),
-             CYCLE_QUALITY_FIGURE=.html_img(
-               dest, "perCycleQuality",
-               .plotCycleQuality(perCycle$quality)),
-             ADAPTER_CONTAMINATION=hwrite(
-               .ppnCount(qa[["adapterContamination"]]),
-               border=NULL)
-
-             )
-    .report_html_do(dest, sections, values, ...)
-}
-
-setMethod(report_html, "ShortReadQQA", .report_html_ShortReadQA)
-
-}
 

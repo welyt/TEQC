@@ -2,7 +2,7 @@ covered.k <-
 function(coverageTarget, k=c(1,2,3,5,10,20)){
 
   # coverages
-  covercounts <- unlist(coverageTarget)
+  covercounts <- unlist(coverageTarget, use.names=FALSE)
   tab <- as.matrix(table(covercounts))
 
   # add evtl. missing numbers of covering reads to 'tab'

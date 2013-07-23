@@ -55,7 +55,7 @@ follow-up analysis like SNP detection.
 %------------------------------------------------------------------------------------------------
 %------------------------------------------------------------------------------------------------
 
-\section{Automated html Report}
+\section{Automated html Reports}
 
 The fastest way to run TEQC quality analysis is to launch the html report generation.
 The main arguments for \Rfunction{TEQCreport} are tables containing positions of sequenced reads and of genomic targets,
@@ -67,9 +67,7 @@ as workspace, for further usage.
 With option \Rfunarg{destDir} you
 can specify the output folder, where all results will go and where you will find the index.html page
 of the html report. The parameters \Rfunarg{sampleName}, \Rfunarg{targetsName} and \Rfunarg{referenceName}
-simply allow to include information about the sample and experiment in the report.
-For details about the different steps, options and results of a TEQC analysis, it is recommended to
-read also the following sections of this documentation. \\
+simply allow to include information about the sample and experiment in the report. \\
 
 \noindent
 \Rcode{> library(TEQC)\\
@@ -85,6 +83,31 @@ read also the following sections of this documentation. \\
 +         	 reads=get.reads(readsfile, skip=0, idcol=4), \\
 + 	         targets=get.targets(targetsfile, skip=0), \\
 +						 genome="hg19")}
+\\
+
+The function \Rfunction{TEQCreport} provides a quality report for only one sample at a time.
+Usually research projects include several samples, and it might be of interest to compare enrichment
+quality among all of them. Since it is cumbersome to check the TEQC reports one by one, we provide the
+function \Rfunction{multiTEQCreport}, which collects results from previously created single-sample
+reports and summarizes them in a new html report. While the creation of single-sample reports is time
+and memory intensive, \Rfunction{multiTEQCreport} finishes quickly, since no heavy calculations have to be
+done anymore. The main input to this function are the paths to the respective \Rfunction{TEQCreport}
+output folders and the sample names that shall be used in tables and plots. The results can be browsed
+via the index.html file in a new \Rfunarg{destDir} output directory.\\
+As an example, let's assume that we have already present TEQC reports for two samples in folders
+\emph{report} and \emph{report2}, respectively. Then the multiple sample report can be created by \\
+
+\noindent
+\Rcode{> multiTEQCreport(singleReportDirs=c("report", "report2"), \\
++            samplenames=c("Sample A","Sample B"), \\
++            projectName="Test Project", \\
++  					 targetsName="Human Exome", \\
++						 referenceName="Human Genome", \\
++         	 destDir="multiTEQCreport")}
+\\
+
+For details about the different steps, options and results of a TEQC analysis, it is recommended to
+read also the following sections of this documentation.
 
 %------------------------------------------------------------------------------------------------
 %------------------------------------------------------------------------------------------------

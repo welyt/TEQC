@@ -1,3 +1,9 @@
+CHANGES IN VERSION 3.0.0
+----------------------
+
+  o new function 'multiTEQCreport' collects results from 'TEQCreport' output from multiple samples and creates a combined quality report
+
+
 CHANGES IN VERSION 2.9.2
 ----------------------
 

@@ -18,7 +18,7 @@ function(reads, targets, returnDups=FALSE, truncateX, col=c("red","lightblue"), 
     reads <- reads$readpairs
 
   # which reads are on target
-  on.target <- overlapsAny(reads, targets)
+  on.target <- reads %over% targets
   reads.on <- reads[on.target,]
   reads.off <- reads[!on.target,]
 
