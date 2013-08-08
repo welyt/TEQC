@@ -45,7 +45,7 @@ targets <- get.targets(targetsfile, skip=0)
 
 ## simulated 2nd sample
 r <- sample(nrow(reads), 0.1 * nrow(reads))
-reads2 <- reads[-r,,drop=T]
+reads2 <- reads[-r,,drop=TRUE]
 
 \dontrun{
 ## create single-sample reports
