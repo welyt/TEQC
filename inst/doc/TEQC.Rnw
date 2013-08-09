@@ -804,6 +804,10 @@ toLatex(sessionInfo())
 \noindent Hummel M, Bonnin S, Lowy E, Roma G. TEQC: an R-package for quality control in
 target capture experiments. Bioinformatics 2011; 27(9): 1316-1317.\\
 
+\noindent Lawrence M, Huber W, Pages H, Aboyoun P, Carlson M, Gentleman R,
+Morgan MT, Carey VJ. Software for Computing and Annotating Genomic Ranges.
+PLoS Comput Biol 2013; 9(8): e1003118.\\
+
 \noindent Bainbridge MN, Wang M, Burgess DL, Kovar C, Rodesch MJ, D'Ascenzo M, Kitzman J, Wu Y-Q, Newsham I, Richmond TA, Jeddeloh JA, Muzny D, Albert TJ, Gibbs RA.
 Whole exome capture in solution with 3 Gbp of data.
 Genome Biology 2010; 11:R62.\\
