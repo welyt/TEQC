@@ -42,7 +42,8 @@ function(reads, targets, Offset=0, perTarget=TRUE, perBase=TRUE){
    for(chr in chr.targ){
       cov.chr <- covercounts.all[[chr]]
       ir.chr <- ranges(targets)[[chr]]
-      tmp <- lapply(ir.chr, function(x) seqselect(cov.chr, x))
+      tmp <- lapply(ir.chr, function(x) cov.chr[x]) # use [ instead of
+                                                    # deprecated seqselect
 
       # coverage average and SD per target
       if(perTarget){

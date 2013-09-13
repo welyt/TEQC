@@ -15,7 +15,7 @@ function(coverageAll, targets, chr, Start, End, Offset=0, add=FALSE,
     covercounts <- c(covercounts, Rle(rep(0, End-L)))
 
   ir <- IRanges(start=Start, end=End)
-  covsel <- seqselect(covercounts, ir)
+  covsel <- covercounts[ir]  # use [ instead of deprecated seqselect
 
   # also stop if coverage is 0 for all bases in selected region
   if(all(covsel == 0))

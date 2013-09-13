@@ -17,13 +17,12 @@ function(coverageAll, baits, returnBaitValues=FALSE, linecol="darkred", lwd, xla
   for(chr in names(baits)){
      cov.chr <- coverageAll[[chr]]
     ir.chr <- ranges(baits)[[chr]]
-    tmp <- lapply(ir.chr, function(x) seqselect(cov.chr, x))
-    avgcov <- sapply(tmp, mean)
+    avgcov <- viewMeans(Views(cov.chr, ir.chr))
     baitcov <- c(baitcov, avgcov)
 
     # per-base coverage
     # seqselect has to be done again on 'reduced' ranges, since baits might be overlapping!
-    cov.chr <- seqselect(cov.chr, reduce(ir.chr))
+    cov.chr <- cov.chr[reduce(ir.chr)]  # use [ instead of deprecated seqselect
     covercounts.baits <- c(covercounts.baits, RleList(cov.chr))
   }
 
