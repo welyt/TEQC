@@ -2,6 +2,14 @@ get.reads <-
 function(readsfile, filetype=c("bed", "bam"), chrcol=1, startcol=2, endcol=3, idcol, zerobased=TRUE, sep="\t", skip=1, header=FALSE, ...){
 
   filetype <- match.arg(filetype)
+  
+# !! check whether filetype was not specified as 'bam', but readsfile is actually a 'bam' file
+  if(length(grep(".bam$", readsfile) == 0) & filetype == "bed"){
+    filetype <- "bam"
+    message("'filetype' was changed to 'bam'")
+  }
+# !!
+  
   if(filetype == "bam"){
     # read BAM file
     param <- ScanBamParam(flag=scanBamFlag(isUnmappedQuery=FALSE), what=c("qname", "pos", "qwidth", "rname"))

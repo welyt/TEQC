@@ -6,7 +6,7 @@
 TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQCreport",
             reads = get.reads(), targets = get.targets(), Offset = 0, pairedend = FALSE, genome = c(NA, "hg19", "hg18"),
             genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot = FALSE, CovTargetLengthPlot = FALSE, CovGCPlot = FALSE,
-            duplicatesPlot = FALSE, baits = get.baits(), WigFiles = FALSE, saveWorkspace = FALSE)
+            duplicatesPlot = FALSE, baits = get.baits(), WigFiles = FALSE, saveWorkspace = FALSE, figureFormat = c("jpeg", "png", "tiff"))
 }
 
 \arguments{
@@ -45,6 +45,7 @@ TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQ
   \item{saveWorkspace}{if \code{TRUE}, an R workspace with objects \code{reads}, \code{targets} and
         output of \code{\link{coverage.target}} and \code{\link{reads2pairs}}
         (in case \code{pairedend = TRUE}) are saved in \code{destDir} to be available for further analyses}
+  \item{figureFormat}{format of the figures produced for the html report (besides pdf graphs)}
 }
 
 

@@ -1,8 +1,5 @@
 coverage.hist <-
-# !!
-#function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, breaks="Sturges", xlab, ylab, main, lwd, ...){
 function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, outline=FALSE, breaks="Sturges", xlab, ylab, main, lwd, ...){
-# !!
 
   # graphical parameters for the histogram and line
   par(mar=c(5,4,4,4))
@@ -13,14 +10,12 @@ function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, 
 
   covercounts <- as.numeric(unlist(coverageTarget, use.names=FALSE))
   
-# !!
   if(!outline){
     x.out <- boxplot.stats(covercounts)$out
     m <- mean(covercounts)
     x.out <- min(x.out[x.out > m])
     covercounts <- covercounts[covercounts < x.out]
   }
-# !!
 
   # histogram of per-target-base coverages (with relative frequencies)
   H <- hist(covercounts, breaks=breaks, plot=FALSE)
@@ -64,7 +59,7 @@ function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, 
   if(missing(main)) main <- "Coverage Distribution"
   if(missing(lwd)) lwd <- 2
 
-  covercounts <- as.numeric(unlist(coverageTarget))
+  covercounts <- as.numeric(unlist(coverageTarget, use.names=FALSE))
 
   if(!outline){
     x.out <- boxplot.stats(covercounts)$out

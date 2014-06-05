@@ -2,7 +2,7 @@ coverage.GC <-
 function(coverageAll, baits, returnBaitValues=FALSE, linecol="darkred", lwd, xlab, ylab, pch, col, cex, ...){
 
   # get GC content
-  Seq <- unlist(values(baits))[,1]
+  Seq <- unlist(values(baits), use.names=FALSE)[,1]
   seqlen <- nchar(Seq)
   Cn <- gregexpr("C", Seq)
   Cn <- sapply(Cn, length)

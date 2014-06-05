@@ -5,7 +5,7 @@
 TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir="TEQCreport",
             reads=get.reads(), targets=get.targets(), Offset=0, pairedend=FALSE, genome=c(NA, "hg19", "hg18"),
             genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot=FALSE, CovTargetLengthPlot=FALSE, CovGCPlot=FALSE,
-            duplicatesPlot=FALSE, baits=get.baits(), WigFiles=FALSE, saveWorkspace=FALSE){
+            duplicatesPlot=FALSE, baits=get.baits(), WigFiles=FALSE, saveWorkspace=FALSE, figureFormat=c("jpeg","png","tiff")){
 # sampleName, targetsName, referenceName: names that can be chosen by user and will be placed on top of html report
 # destDir: output directory
 # reads, targets: reads/targets RangedData tables or commands how to read them
@@ -18,6 +18,11 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
 # WigFiles: shall wiggle files be created
 # saveWorkspace: should R workspace with 'reads', 'targets' and output of 'coverage.target()' and 'reads2pairs()'
 #   (if pairedend=T) bet saved for further analyses?
+# !!figureFormat: format of the figures for the html report (besides pdf graphs)
+  
+# !!
+  figureFormat <- match.arg(figureFormat)
+# !!
 
   # output directory
   if (!file.exists(destDir))
@@ -96,11 +101,9 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
   # coverage
   print("calculating coverage...")
   Coverage <- coverage.target(reads, targets, Offset=Offset)
-#!! save statisitics also in separate table for later use in multiTEQCreport.R
   stats <- c(fr, Coverage$avgTargetCoverage, Coverage$targetCoverageSD, Coverage$targetCoverageQuantiles)
   names(stats) <- c("fractionReadsOnTarget", "avgCoverage", "coverageSD", "coverageMin", "coverageQuartile1", "medianCoverage", "coverageQuartile3", "coverageMax")
   write.table(data.frame(stats), file=file.path(destDir, "onTargetStatistics.txt"), sep="\t", col.names=FALSE, quote=FALSE)
-#!!
   avgcov <- data.frame(round(Coverage$avgTargetCoverage, 2), round(Coverage$targetCoverageSD, 2), matrix(Coverage$targetCoverageQuantiles, ncol=5))
   names(avgcov) <- c("avgTargetCoverage", "targetCoverageSD", paste(names(Coverage$targetCoverageQuantiles), "quantile"))
 
@@ -115,13 +118,8 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
     targetcov <- rbind(apply(targetcov[1:20,], 2, as.character), "...")
     
   # sensitivity
-#!! save sensitivity table for later use in multiTEQCreport.R
-  #sensi <- round(covered.k(Coverage$coverageTarget, k=k) * 100, 2)
   sensi0 <- covered.k(Coverage$coverageTarget, k=k)
   sensi <- round(sensi0 * 100, 2)
-#  sensi0 <- data.frame(coverage=names(sensi0), fractionTargetBases=sensi0)
-#  write.table(sensi0, file=file.path(destDir, "sensitivity.txt"), sep="\t", row.names=FALSE, quote=FALSE)
-#!!
   N <- paste(">=", names(sensi), "X", sep="")
   sensi <- paste(sensi, "%", sep="")
   names(sensi) <- N
@@ -137,32 +135,32 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
              OFFSET=as.character(Offset),
              SPECIFICITY=hwrite(paste(round(fr*100, 2), "%", sep="")),
              ENRICHMENT=hwrite(enr),
-             CHROM_BARPLOT=htmlChromBarplot(destDir, reads, targets),
+             CHROM_BARPLOT=htmlChromBarplot(destDir, reads, targets, figureFormat),
              AVGCOV=hwrite(avgcov),
              COVTARG=hwrite(targetcov),
              SENSITIVITY=hwrite(sensi),
-             COV_HIST=htmlCoverageHist(destDir, Coverage$coverageTarget, covthreshold=8))
+             COV_HIST=htmlCoverageHist(destDir, Coverage$coverageTarget, figureFormat, covthreshold=8))
 
   # special output for paired-end data
   if(pairedend)
     values <- c(values, list(
              NPAIRS=as.character(n.pairs),
              NSINGLES=as.character(n.singles),
-             ISIZEHIST=htmlInsertSizeHist(destDir, readpairs)))
+             ISIZEHIST=htmlInsertSizeHist(destDir, readpairs, figureFormat)))
 
   # optional additional plots
   if(CovUniformityPlot)
-    values <- c(values, list(COV_UNIFORM=htmlCovUniformity(destDir, Coverage)))
+    values <- c(values, list(COV_UNIFORM=htmlCovUniformity(destDir, Coverage, figureFormat)))
   if(CovTargetLengthPlot)
-    values <- c(values, list(COV_TARGLEN=htmlCovTargetLength(destDir, targetcov0)))
+    values <- c(values, list(COV_TARGLEN=htmlCovTargetLength(destDir, targetcov0, figureFormat)))
   if(CovGCPlot)
-    values <- c(values, list(COV_GC=htmlCovGC(destDir, Coverage$coverageAll, baits)))
+    values <- c(values, list(COV_GC=htmlCovGC(destDir, Coverage$coverageAll, baits, figureFormat)))
   if(duplicatesPlot){
     print("duplicates analysis...")
     if(pairedend)
-      values <- c(values, list(DUPLICATES=htmlDuplicatesBarplot(destDir, readpairs, targets, ylab="Fraction of read pairs")))
+      values <- c(values, list(DUPLICATES=htmlDuplicatesBarplot(destDir, readpairs, targets, ylab="Fraction of read pairs", figureFormat)))
     else
-      values <- c(values, list(DUPLICATES=htmlDuplicatesBarplot(destDir, reads, targets)))
+      values <- c(values, list(DUPLICATES=htmlDuplicatesBarplot(destDir, reads, targets, figureFormat)))
   }
   
   # create wiggle files
@@ -241,12 +239,17 @@ make.report <- function(destDir, values, pairedend, CovUniformityPlot, CovTarget
 
 
 # create jpeg and pdf figures and put them into report
-html_img <- function(dir, file, fig, ...){
-    jpegFile <- paste(file, "jpg", sep=".")
+html_img <- function(dir, file, fig, figureFormat, ...){
+    figFile <- paste(file, figureFormat, sep=".")
     pdfFile <- paste(file, "pdf", sep=".")
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
+    if(figureFormat == "jpeg")
+      jpeg(file.path(imgDir, figFile), ...)
+    else if(figureFormat == "png")
+      png(file.path(imgDir, figFile), ...)
+    if(figureFormat == "tiff")
+      tiff(file.path(imgDir, figFile), ...)
     fig
     dev.off()
 
@@ -255,16 +258,21 @@ html_img <- function(dir, file, fig, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))  # function from hwriter
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))  # function from hwriter
 }
 
 
-htmlChromBarplot <- function(dir, reads, targets, ...){
-    jpegFile <- "chrom_barplot.jpg"
+htmlChromBarplot <- function(dir, reads, targets, figureFormat, ...){
+    figFile <- paste("chrom_barplot", figureFormat, sep=".")
     pdfFile <- "chrom_barplot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), width=800, ...)
+    if(figureFormat == "jpeg")
+      jpeg(file.path(imgDir, figFile), width=800, ...)
+    else if(figureFormat == "png")
+      png(file.path(imgDir, figFile), width=800, ...)
+    if(figureFormat == "tiff")
+      tiff(file.path(imgDir, figFile), width=800, ...)
     chrom.barplot(reads, targets)
     dev.off()
 
@@ -273,68 +281,86 @@ htmlChromBarplot <- function(dir, reads, targets, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))  # function from hwriter
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))  # function from hwriter
 }
 
 
-htmlCoverageHist <- function(dir, coverageTarget, ...){
-    jpegFile <- "coverage_histogram.jpg"
+htmlCoverageHist <- function(dir, coverageTarget, figureFormat, ...){
+  figFile <- paste("coverage_histogram", figureFormat, sep=".")
     pdfFile <- "coverage_histogram.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile))
-#!! save cumulative sum of target base fraction with coverage x -> sensitivity
-    sensi <- .coverage.hist(coverageTarget, ...)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile))
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile))
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile))
+  sensi <- .coverage.hist(coverageTarget, ...)
     dev.off()
     write.table(sensi, file=file.path(dir, "sensitivity.txt"), sep="\t", row.names=FALSE, quote=FALSE)
-#!!
 
     pdf(file.path(imgDir, pdfFile))
     coverage.hist(coverageTarget, ...)
     dev.off()
 
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
 
-htmlInsertSizeHist <- function(dir, readpairs, ...){
-    jpegFile <- "insert_size_histogram.jpg"
+htmlInsertSizeHist <- function(dir, readpairs, figureFormat, ...){
+  figFile <- paste("insert_size_histogram", figureFormat, sep=".")
     pdfFile <- "insert_size_histogram.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
-    insert.size.hist(readpairs)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  insert.size.hist(readpairs)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)
     insert.size.hist(readpairs)
     dev.off()
 
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
-htmlCovUniformity <- function(dir, Coverage, ...){
-    jpegFile <- "coverage_uniformity.jpg"
+htmlCovUniformity <- function(dir, Coverage, figureFormat, ...){
+  figFile <- paste("coverage_uniformity", figureFormat, sep=".")
     pdfFile <- "coverage_uniformity.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
-    coverage.uniformity(Coverage)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  coverage.uniformity(Coverage)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)
     coverage.uniformity(Coverage)
     dev.off()
 
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
-htmlCovTargetLength <- function(dir, targetcov, ...){
-    jpegFile <- "coverage_targetlength.jpg"
+htmlCovTargetLength <- function(dir, targetcov, figureFormat, ...){
+  figFile <- paste("coverage_targetlength", figureFormat, sep=".")
     pdfFile <- "coverage_targetlength.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), width=1000, ...)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), width=1000, ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), width=1000, ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), width=1000, ...)
     par(mfrow=c(1,2))
     coverage.targetlength.plot(targetcov, plotcolumn="nReads")
     coverage.targetlength.plot(targetcov, plotcolumn="avgCoverage")
@@ -346,39 +372,49 @@ htmlCovTargetLength <- function(dir, targetcov, ...){
     coverage.targetlength.plot(targetcov, plotcolumn="avgCoverage")
     dev.off()
 
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
-htmlCovGC <- function(dir, coverageAll, baits, ...){
-    jpegFile <- "coverage_GC.jpg"
+htmlCovGC <- function(dir, coverageAll, baits, figureFormat, ...){
+  figFile <- paste("coverage_GC", figureFormat, sep=".")
     pdfFile <- "coverage_GC.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
-    coverage.GC(coverageAll, baits)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  coverage.GC(coverageAll, baits)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)
     coverage.GC(coverageAll, baits)
     dev.off()
 
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
-htmlDuplicatesBarplot <- function(dir, reads, targets, ...){
-    jpegFile <- "duplicates_barplot.jpg"
-    pdfFile <- "duplicates_barplot.pdf"
+htmlDuplicatesBarplot <- function(dir, reads, targets, figureFormat, ...){
+  figFile <- paste("duplicates_barplot", figureFormat, sep=".")
+  pdfFile <- "duplicates_barplot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile))
-    duplicates.barplot(reads, targets, ...)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  duplicates.barplot(reads, targets, ...)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile))
     duplicates.barplot(reads, targets, ...)
     dev.off()
 
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
 

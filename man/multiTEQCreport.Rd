@@ -4,7 +4,7 @@
 \description{Creates an automated html report comparing TEQC analysis results of several samples}
 \usage{
 multiTEQCreport(singleReportDirs, samplenames, projectName = "", targetsName = "",
-          referenceName = "", destDir = "multiTEQCreport", k = c(1, 2, 3, 5, 10, 20))
+          referenceName = "", destDir = "multiTEQCreport", k = c(1, 2, 3, 5, 10, 20), figureFormat = c("jpeg", "png", "tiff"))
 }
 
 \arguments{
@@ -16,6 +16,7 @@ multiTEQCreport(singleReportDirs, samplenames, projectName = "", targetsName = "
   \item{destDir}{directory where results and html documents shall be saved}
   \item{k}{integer vector of \code{k}-values for which to show fraction
         of target bases with coverage >= \code{k} in section 'Sensitivity'}
+  \item{figureFormat}{format of the figures produced for the html report (besides pdf graphs)}
 }
 
 \details{Before creating the html report for multiple samples, \code{TEQCreport} has to be run for each of the samples separately. 

@@ -3,12 +3,17 @@
 # based on output from TEQCreport() (produced with TEQC version >3.0.0)
 
 multiTEQCreport <- function(singleReportDirs, samplenames, projectName="", targetsName="",
-          referenceName="", destDir="multiTEQCreport", k=c(1, 2, 3, 5, 10, 20)){
+          referenceName="", destDir="multiTEQCreport", k=c(1, 2, 3, 5, 10, 20), figureFormat=c("jpeg","png","tiff")){
 # singleReportDirs: string of directory names: output directories of function TEQCreport()
 # samplenames: names of individual samples, used for plots
 # projectName, targetsName, referenceName: names that can be chosen by user and will be placed on top of html report
 # destDir: output directory
 # k: parameter for 'covered.k()': ?k?-values for which to show fraction of target bases with coverage >= ?k?
+# !!figureFormat: format of the figures for the html report (besides pdf graphs)
+  
+  # !!
+  figureFormat <- match.arg(figureFormat)
+  # !!
 
   # get/check sample directories and names
   n.samples <- length(singleReportDirs)
@@ -112,12 +117,12 @@ multiTEQCreport <- function(singleReportDirs, samplenames, projectName="", targe
          TARGETS=targetsName,
          REFERENCE=referenceName,
          SAMPLES=hwrite(sampleInfo),
-         SPECI_BARPLOT=htmlSpeciBarplot(destDir, speci),
+         SPECI_BARPLOT=htmlSpeciBarplot(destDir, speci, figureFormat),
          #SPECI=hwrite(speci),
-         COV_BOXPLOT=htmlCovBoxplot(destDir, targcov),
-         SENSI_BARPLOT=htmlSensiBarplot(destDir, sensi),
-         UNIF_PLOT=htmlUniformityPlot(destDir, sensi0, avgCov=targcov["avgCoverage",]),
-         COV_CORPLOT=htmlCovCorrelationPlot(destDir, perTargCov)
+         COV_BOXPLOT=htmlCovBoxplot(destDir, targcov, figureFormat),
+         SENSI_BARPLOT=htmlSensiBarplot(destDir, sensi, figureFormat),
+         UNIF_PLOT=htmlUniformityPlot(destDir, sensi0, avgCov=targcov["avgCoverage",], figureFormat),
+         COV_CORPLOT=htmlCovCorrelationPlot(destDir, perTargCov, figureFormat)
          )
          
   # create report
@@ -163,13 +168,18 @@ speciBarplot <- function(speci){
   barplot(t(100*speci), ylab="% on-target reads", ylim=c(0,100), col="cornflowerblue")
 }
 
-htmlSpeciBarplot <- function(dir, speci, ...){
-    jpegFile <- "specificity_barplot.jpg"
-    pdfFile <- "specificity_barplot.pdf"
+htmlSpeciBarplot <- function(dir, speci, figureFormat, ...){
+  figFile <- paste("specificity_barplot", figureFormat, sep=".")
+  pdfFile <- "specificity_barplot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
-    speciBarplot(speci)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  speciBarplot(speci)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)
@@ -177,7 +187,7 @@ htmlSpeciBarplot <- function(dir, speci, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
 #[
@@ -200,13 +210,18 @@ covBoxplot <- function(targcov){
   legend("bottomleft", "average coverage", pch="*", pt.cex=2, col="darkred")
 }
 
-htmlCovBoxplot <- function(dir, targcov, ...){
-    jpegFile <- "targetCoverage_boxplot.jpg"
-    pdfFile <- "targetCoverage_boxplot.pdf"
+htmlCovBoxplot <- function(dir, targcov, figureFormat, ...){
+  figFile <- paste("targetCoverage_boxplot", figureFormat, sep=".")
+  pdfFile <- "targetCoverage_boxplot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
-    covBoxplot(targcov)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  covBoxplot(targcov)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)
@@ -214,7 +229,7 @@ htmlCovBoxplot <- function(dir, targcov, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
 
@@ -234,13 +249,18 @@ sensiBarplot <- function(sensi){
   legend(x=p+p*0.025, y=80, legend=k, fill=rev(col), title="Coverage")
 }
 
-htmlSensiBarplot <- function(dir, sensi, ...){
-    jpegFile <- "sensitivity_barplot.jpg"
-    pdfFile <- "sensitivity_barplot.pdf"
+htmlSensiBarplot <- function(dir, sensi, figureFormat, ...){
+  figFile <- paste("sensitivity_barplot", figureFormat, sep=".")
+  pdfFile <- "sensitivity_barplot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), ...)
-    sensiBarplot(sensi)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), ...)
+  sensiBarplot(sensi)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), ...)
@@ -248,7 +268,7 @@ htmlSensiBarplot <- function(dir, sensi, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
 
@@ -272,13 +292,18 @@ unifplot <- function(sensi, avgCov){
   legend("topright", colnames(sensi), col=1:n.samples, lty=lty, lwd=2)
 }
 
-htmlUniformityPlot <- function(dir, sensi, avgCov, ...){
-    jpegFile <- "coverageUniformity_plot.jpg"
-    pdfFile <- "coverageUniformity_plot.pdf"
+htmlUniformityPlot <- function(dir, sensi, avgCov, figureFormat, ...){
+  figFile <- paste("coverageUniformity_plot", figureFormat, sep=".")
+  pdfFile <- "coverageUniformity_plot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), width=1000, ...)
-    unifplot(sensi, avgCov)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), width=1000, ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), width=1000, ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile),width=1000, ...)
+   unifplot(sensi, avgCov)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile), width=14, ...)
@@ -286,7 +311,7 @@ htmlUniformityPlot <- function(dir, sensi, avgCov, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
 
@@ -313,12 +338,17 @@ covcorplot <- function(perTargCov){
   pairs(perTargCov, panel=plot.i, lower.panel=cortext)
 }
 
-htmlCovCorrelationPlot <- function(dir, perTargCov, ...){
-    jpegFile <- "perTargetCoverageCorrelation_plot.jpg"
-    pdfFile <- "perTargetCoverageCorrelation_plot.pdf"
+htmlCovCorrelationPlot <- function(dir, perTargCov, figureFormat, ...){
+  figFile <- paste("perTargetCoverageCorrelation_plot", figureFormat, sep=".")
+  pdfFile <- "perTargetCoverageCorrelation_plot.pdf"
     imgDir <- file.path(dir, "image")
 
-    jpeg(file.path(imgDir, jpegFile), width=800, height=800, ...)
+  if(figureFormat == "jpeg")
+    jpeg(file.path(imgDir, figFile), width=800, height=800, ...)
+  else if(figureFormat == "png")
+    png(file.path(imgDir, figFile), width=800, height=800, ...)
+  if(figureFormat == "tiff")
+    tiff(file.path(imgDir, figFile), width=800, height=800, ...)
     covcorplot(perTargCov)
     dev.off()
 
@@ -327,6 +357,6 @@ htmlCovCorrelationPlot <- function(dir, perTargCov, ...){
     dev.off()
 
     # show jpeg in the report but link to pdf
-    hwriteImage(file.path(".", "image", jpegFile), link=file.path(".", "image", pdfFile))
+    hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
