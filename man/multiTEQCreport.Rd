@@ -58,7 +58,7 @@ TEQCreport(sampleName="Test Sample B", targetsName="Human Exome", referenceName=
 ## create multi-sample report
 multiTEQCreport(singleReportDirs=c("./reportA", "./reportB"), samplenames=c("Sample A","Sample B"), 
           projectName="Test Project", targetsName="Human Exome", referenceName="Human Genome", 
-          destDir="./multiTEQCreport"
+          destDir="./multiTEQCreport")
           }
 }
 

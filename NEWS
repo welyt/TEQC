@@ -1,3 +1,9 @@
+CHANGES IN VERSION 3.5.2
+----------------------
+
+  o new option 'covthreshold' in 'TEQCreport' (same as in 'coverage.hist') to manipulate which coverage value should be highlighted by dashed lines in the coverage histogram 
+
+
 CHANGES IN VERSION 3.5.1
 ----------------------
 

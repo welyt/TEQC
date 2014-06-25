@@ -5,7 +5,7 @@
 \usage{
 TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQCreport",
             reads = get.reads(), targets = get.targets(), Offset = 0, pairedend = FALSE, genome = c(NA, "hg19", "hg18"),
-            genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot = FALSE, CovTargetLengthPlot = FALSE, CovGCPlot = FALSE,
+            genomesize, k=c(1, 2, 3, 5, 10, 20), covthreshold = 8, CovUniformityPlot = FALSE, CovTargetLengthPlot = FALSE, CovGCPlot = FALSE,
             duplicatesPlot = FALSE, baits = get.baits(), WigFiles = FALSE, saveWorkspace = FALSE, figureFormat = c("jpeg", "png", "tiff"))
 }
 
@@ -30,6 +30,7 @@ TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQ
       option 'genome' will be ignored.}
   \item{k}{integer vector of \code{k}-values for which to show fraction
         of target bases with coverage >= \code{k} in 'Sensitivity' table. Passed to \code{\link{covered.k}}}
+  \item{covthreshold}{integer indicating which coverage value shall be highlighted by dashed lines in the coverage histogram. Passed to \code{\link{coverage.hist}}}
   \item{CovUniformityPlot}{if \code{TRUE}, a coverage uniformity plot is created,
         see \code{\link{coverage.uniformity}}}
   \item{CovTargetLengthPlot}{if \code{TRUE}, coverage vs target length plots are created,

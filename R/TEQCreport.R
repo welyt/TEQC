@@ -4,7 +4,7 @@
 # get results values and plots
 TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir="TEQCreport",
             reads=get.reads(), targets=get.targets(), Offset=0, pairedend=FALSE, genome=c(NA, "hg19", "hg18"),
-            genomesize, k=c(1, 2, 3, 5, 10, 20), CovUniformityPlot=FALSE, CovTargetLengthPlot=FALSE, CovGCPlot=FALSE,
+            genomesize, k=c(1, 2, 3, 5, 10, 20), covthreshold=8, CovUniformityPlot=FALSE, CovTargetLengthPlot=FALSE, CovGCPlot=FALSE,
             duplicatesPlot=FALSE, baits=get.baits(), WigFiles=FALSE, saveWorkspace=FALSE, figureFormat=c("jpeg","png","tiff")){
 # sampleName, targetsName, referenceName: names that can be chosen by user and will be placed on top of html report
 # destDir: output directory
@@ -13,16 +13,15 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
 # pairedend: are the data paired-end reads?
 # genome, genomesize: options as needed for 'fraction.target()'
 # k: parameter for 'covered.k()'
+# !! covthreshold: coverage threshold for 'coverage.hist()'
 # CovUniformityPlot, CovTargetLengthPlot, CovGCPlot, duplicatesPlot: shall corresponding plots be created?
 # baits: baits table or command how to read it
 # WigFiles: shall wiggle files be created
 # saveWorkspace: should R workspace with 'reads', 'targets' and output of 'coverage.target()' and 'reads2pairs()'
 #   (if pairedend=T) bet saved for further analyses?
-# !!figureFormat: format of the figures for the html report (besides pdf graphs)
+# figureFormat: format of the figures for the html report (besides pdf graphs)
   
-# !!
   figureFormat <- match.arg(figureFormat)
-# !!
 
   # output directory
   if (!file.exists(destDir))
@@ -139,7 +138,7 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
              AVGCOV=hwrite(avgcov),
              COVTARG=hwrite(targetcov),
              SENSITIVITY=hwrite(sensi),
-             COV_HIST=htmlCoverageHist(destDir, Coverage$coverageTarget, figureFormat, covthreshold=8))
+             COV_HIST=htmlCoverageHist(destDir, Coverage$coverageTarget, figureFormat, covthreshold=covthreshold))
 
   # special output for paired-end data
   if(pairedend)
