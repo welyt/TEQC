@@ -32,7 +32,7 @@ coverage.hist(coverageTarget, col.hist = "lightblue", col.line = "orange", covth
       of target bases with at least the specified coverage.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{coverage.uniformity}}, \code{\link{coverage.density}}, \code{\link{coverage.plot}},

@@ -18,7 +18,7 @@ covered.k(coverageTarget, k = c(1, 2, 3, 5, 10, 20))
       achieving coverages >= \code{k}}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{coverage.hist}}, \code{\link{coverage.uniformity}},

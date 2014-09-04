@@ -10,16 +10,27 @@ function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, 
 
   covercounts <- as.numeric(unlist(coverageTarget, use.names=FALSE))
   
+  # remove outliers
   if(!outline){
     x.out <- boxplot.stats(covercounts)$out
     m <- mean(covercounts)
     x.out <- min(x.out[x.out > m])
-    covercounts <- covercounts[covercounts < x.out]
-  }
 
+    # !! use this reduced version only for plotting - but all calculations still have to be based on the complete coverage data !!
+    covercounts2 <- covercounts[covercounts < x.out]
+  }
+  else
+    covercounts2 <- covercounts
+  # !!
+  
   # histogram of per-target-base coverages (with relative frequencies)
-  H <- hist(covercounts, breaks=breaks, plot=FALSE)
-  H$counts <- H$counts / sum(H$counts)
+  H <- hist(covercounts2, breaks=breaks, plot=FALSE)
+  
+  # !!
+  #H$counts <- H$counts / sum(H$counts)
+  H$counts <- H$counts / length(covercounts)
+  # !!
+  
   plot(H, freq=TRUE, xlab=xlab, ylab=ylab, main=main, col=col.hist, ...)
 
   # cumulative coverages
@@ -47,7 +58,7 @@ function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, 
 
 
 
-#!! internal function - same as coverage.hist, just the cumulative sum of target
+# internal function - same as coverage.hist, just the cumulative sum of target
 #    base fraction with coverage x is returned -> needed for multiTEQCreport.R
 .coverage.hist <-
 function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, outline=FALSE, breaks="Sturges", xlab, ylab, main, lwd, ...){
@@ -65,12 +76,22 @@ function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, 
     x.out <- boxplot.stats(covercounts)$out
     m <- mean(covercounts)
     x.out <- min(x.out[x.out > m])
-    covercounts <- covercounts[covercounts < x.out]
+    
+    # !! use this reduced version only for plotting - but all calculations still have to be based on the complete coverage data !!
+    covercounts2 <- covercounts[covercounts < x.out]
   }
-
+  else
+    covercounts2 <- covercounts
+  # !!
+  
   # histogram of per-target-base coverages (with relative frequencies)
-  H <- hist(covercounts, breaks=breaks, plot=FALSE)
-  H$counts <- H$counts / sum(H$counts)
+  H <- hist(covercounts2, breaks=breaks, plot=FALSE)
+  
+  # !!
+  #H$counts <- H$counts / sum(H$counts)
+  H$counts <- H$counts / length(covercounts)
+  # !!
+
   plot(H, freq=TRUE, xlab=xlab, ylab=ylab, main=main, col=col.hist, ...)
 
   # cumulative coverages

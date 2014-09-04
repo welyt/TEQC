@@ -37,7 +37,7 @@ coverage.target(reads, targets, Offset = 0, perTarget = TRUE, perBase = TRUE)
 
 %\references{}
 
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{covered.k}}, \code{\link{coverage.hist}}, \code{\link{coverage.uniformity}}, \code{\link{coverage.plot}},

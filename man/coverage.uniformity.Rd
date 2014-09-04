@@ -33,7 +33,7 @@
 Solution hybrid selection with ultra-long oligonucleotides for massively parallel targeted sequencing. Nat Biotechnol. 2009; 27(2): 182-9.
 }
 
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{covered.k}}, \code{\link{coverage.hist}}, \code{\link{coverage.density}},

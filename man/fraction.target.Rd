@@ -21,7 +21,7 @@
 \value{Returns the fraction of nucleotides within the genome that were targeted.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 \note{With the output from \code{\link{fraction.target}} and \code{\link{fraction.reads.target}}
     the 'enrichment' of the target capture experiment can be calculated as

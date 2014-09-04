@@ -21,7 +21,7 @@ readsPerTarget(reads, targets, Offset = 0)
       column containing numbers of reads overlapping each target}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 \note{As \code{reads} input also the \code{mappingReads} output of function \code{\link{fraction.reads.target}}
     can be used to speed up calculation. In this case, make sure that \code{targets} and \code{Offset} parameters were the

@@ -31,7 +31,7 @@ multiTEQCreport(singleReportDirs, samplenames, projectName = "", targetsName = "
     target capture experiments. Bioinformatics 2011; 27(9):1316-7.
 }
 
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{TEQCreport}}}

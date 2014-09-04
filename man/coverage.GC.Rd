@@ -34,7 +34,7 @@
 Enrichment of sequencing targets from the human genome by solution hybridization.
 Genome Biol. 2009; 10(10): R116.}
 
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{covered.k}}, \code{\link{coverage.hist}}, \code{\link{coverage.plot}},

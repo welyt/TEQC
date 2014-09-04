@@ -35,7 +35,7 @@
 
 %\references{}
 
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{covered.k}}, \code{\link{coverage.hist}},

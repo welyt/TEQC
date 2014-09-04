@@ -36,7 +36,7 @@ fraction.reads.target(reads, targets, Offset = 0, mappingReads = FALSE)
   \item{mappingReads}{\code{RangedData} table containing positions of the reads / read pairs mapping to target regions}
 }
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 \note{With the output from \code{\link{fraction.target}} and \code{\link{fraction.reads.target}}
     the 'enrichment' of the target capture experiment can be calculated as

@@ -30,7 +30,7 @@ coverage.targetlength.plot(targets, plotcolumn, linecol = 2, xlab, ylab, lwd, pc
     A smoothing spline is added to the plot.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{readsPerTarget}}, \code{\link{covered.k}}, \code{\link{coverage.hist}},

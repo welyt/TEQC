@@ -44,7 +44,7 @@ duplicates.barplot(reads, targets, returnDups=FALSE, truncateX, col=c("red","lig
     The latter gives row-based fractions which correspond to the bar heights.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{get.reads}}, \code{\link{reads2pairs}}, \code{\link{get.targets}}}

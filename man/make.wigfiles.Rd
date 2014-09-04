@@ -21,7 +21,7 @@ make.wigfiles(coverageAll, chroms, trackname = "Coverage", filename = "Coverage"
 \value{One or more wiggle files listing per-base (non-zero) read coverages}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{coverage.plot}}, \code{\link{covered.k}},

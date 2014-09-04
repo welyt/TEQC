@@ -30,7 +30,7 @@ insert.size.hist(readpairs, returnInserts = FALSE, legendpos="topleft", outline=
     If \code{returnInserts = TRUE}, a named vector of insert sizes is returned.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 %\note{}
 

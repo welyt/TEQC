@@ -29,7 +29,7 @@
 \value{Barplot of reads and optionally targets per chromosome.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{get.reads}}}

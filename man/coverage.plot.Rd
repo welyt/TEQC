@@ -34,7 +34,7 @@ coverage.plot(coverageAll, targets, chr, Start, End, Offset = 0, add = FALSE, co
       such that coverage can be related to the captured targets.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{coverage.target}}, \code{\link{make.wigfiles}}, \code{\link{covered.k}},

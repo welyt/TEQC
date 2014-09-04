@@ -63,7 +63,7 @@ TEQCreport(sampleName = "", targetsName = "", referenceName = "", destDir = "TEQ
     target capture experiments. Bioinformatics 2011; 27(9):1316-1317
 }
 
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{get.reads}}, \code{\link{get.targets}}, \code{\link{fraction.target}}, \code{\link{fraction.reads.target}},

@@ -25,7 +25,7 @@
   adjacent regions are collapsed to one region.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 \note{Since overlapping regions are collapsed, the input bedfile can also contain positions
   of the (in most cases overlapping) hybridization probes used for the target capture.}

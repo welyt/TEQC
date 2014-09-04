@@ -1,3 +1,9 @@
+CHANGES IN VERSION 3.5.3
+----------------------
+
+  o bug fix in 'coverage.hist': coverage outlier values are removed from the histogram if 'outline=FALSE', but cumulative base fractions are now still calculated based on the complete coverage data (affects the orange line in the coverage histogram, the values in the 'sensitivity.txt' output table and the sensitivity barplots in the multiTEQCreport) 
+
+
 CHANGES IN VERSION 3.5.2
 ----------------------
 

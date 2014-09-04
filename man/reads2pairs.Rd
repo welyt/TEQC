@@ -42,7 +42,7 @@ reads2pairs(reads, max.distance)
     position of the first read to end position of the second read}}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 %\note{}
 

@@ -30,7 +30,7 @@
   ("bait") positions and sequences. Overlapping or adjacent baits are not collapsed.}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 
 %\note{}
 

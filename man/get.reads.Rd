@@ -42,7 +42,7 @@
 \value{A \code{\link[IRanges:RangedData-class]{RangedData}} table holding the read positions}
 
 %\references{}
-\author{Manuela Hummel \email{manuela.hummel@crg.es}}
+\author{Manuela Hummel \email{m.hummel@dkfz.de}}
 %\note{}
 
 \seealso{\code{\link{get.targets}}}
