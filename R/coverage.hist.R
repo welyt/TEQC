@@ -117,7 +117,11 @@ function(coverageTarget, col.hist="lightblue", col.line="orange", covthreshold, 
   }
 
   # cumulative coverage fractions
-  res <- cumsum(cs / sum(cs))
+#!! wrong
+  #res <- cumsum(cs / sum(cs))
+  res <- cs / sum(tab)
+#!!
+
   res <- data.frame(coverage=rev(names(res)), fractionTargetBases=rev(res))
   return(res)
 }

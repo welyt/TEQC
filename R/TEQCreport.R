@@ -395,7 +395,8 @@ htmlCovGC <- function(dir, coverageAll, baits, figureFormat, ...){
     hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
-htmlDuplicatesBarplot <- function(dir, reads, targets, figureFormat, ...){
+#!! add 'ylab' parameter
+htmlDuplicatesBarplot <- function(dir, reads, targets, figureFormat, ylab, ...){
   figFile <- paste("duplicates_barplot", figureFormat, sep=".")
   pdfFile <- "duplicates_barplot.pdf"
     imgDir <- file.path(dir, "image")
@@ -406,11 +407,11 @@ htmlDuplicatesBarplot <- function(dir, reads, targets, figureFormat, ...){
     png(file.path(imgDir, figFile), ...)
   if(figureFormat == "tiff")
     tiff(file.path(imgDir, figFile), ...)
-  duplicates.barplot(reads, targets, ...)
+  duplicates.barplot(reads, targets, ylab=ylab, ...)
     dev.off()
 
     pdf(file.path(imgDir, pdfFile))
-    duplicates.barplot(reads, targets, ...)
+    duplicates.barplot(reads, targets, ylab=ylab, ...)
     dev.off()
 
     hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
