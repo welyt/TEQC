@@ -7,7 +7,7 @@
 \usage{coverage.GC(coverageAll, baits, returnBaitValues = FALSE, linecol = "darkred", lwd, xlab, ylab, pch, col, cex, ...)}
 
 \arguments{
-  \item{coverageAll}{\code{\link[IRanges:Rle-class]{RleList}} containing \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageAll}{\code{\link[IRanges:AtomicList-class]{RleList}} containing \code{\link[S4Vectors:Rle-class]{Rle}}
         vectors of per-base coverages for each chromosome, i.e. \code{coverageAll} output of \code{\link{coverage.target}}}
   \item{baits}{A \code{\link[IRanges:RangedData-class]{RangedData}} table holding the hybridization probe
   ("bait") positions and sequences, i.e. output of\code{\link{get.baits}}}

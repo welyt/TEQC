@@ -8,7 +8,7 @@ coverage.hist(coverageTarget, col.hist = "lightblue", col.line = "orange", covth
 }
 
 \arguments{
-  \item{coverageTarget}{\code{\link[IRanges:Rle-class]{RleList}} containing \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageTarget}{\code{\link[IRanges:AtomicList-class]{RleList}} containing \code{\link[S4Vectors:Rle-class]{Rle}}
         vectors of per-target-base coverages for each chromosome, i.e. \code{coverageTarget} output from \code{\link{coverage.target}}}
   \item{col.hist}{histogram color}
   \item{col.line}{color of the cumulative density line}

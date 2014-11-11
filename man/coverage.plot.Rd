@@ -7,7 +7,7 @@ coverage.plot(coverageAll, targets, chr, Start, End, Offset = 0, add = FALSE, co
 }
 
 \arguments{
-  \item{coverageAll}{\code{\link[IRanges:Rle-class]{RleList}} containing \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageAll}{\code{\link[IRanges:AtomicList-class]{RleList}} containing \code{\link[S4Vectors:Rle-class]{Rle}}
         vectors of per-base coverages for each chromosome, i.e. \code{coverageAll} output from \code{\link{coverage.target}}}
   \item{targets}{optional; \code{\link[IRanges:RangedData-class]{RangedData}} table containing positions
       of target regions, i.e. output from \code{\link{get.targets}}; if missing no genomic regions are highlighted}

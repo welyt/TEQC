@@ -27,10 +27,10 @@ coverage.target(reads, targets, Offset = 0, perTarget = TRUE, perBase = TRUE)
   \item{targetCoverages}{Input \code{RangedData} table \code{targets} with two additional 'values'
       columns \code{avgCoverage} and \code{coverageSD}. The former contains the average coverage for each target,
       the latter the respective coverage standard deviation. Only returned if \code{perTarget} equals \code{TRUE}.}
-  \item{coverageAll}{\code{\link[IRanges:Rle-class]{RleList}} containing a \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageAll}{\code{\link[IRanges:AtomicList-class]{RleList}} containing a \code{\link[S4Vectors:Rle-class]{Rle}}
         vector for each chromosome with coverages for all bases that are sequenced and/or within a targeted;
         only returned if \code{perBase} equals \code{TRUE}}
-  \item{coverageTarget}{\code{\link[IRanges:Rle-class]{RleList}} containing a \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageTarget}{\code{\link[IRanges:AtomicList-class]{RleList}} containing a \code{\link[S4Vectors:Rle-class]{Rle}}
         vector for each chromosome with coverages for target bases only;
         only returned if \code{perBase} equals \code{TRUE}}
 }

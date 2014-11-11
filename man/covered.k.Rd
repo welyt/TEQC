@@ -8,7 +8,7 @@ covered.k(coverageTarget, k = c(1, 2, 3, 5, 10, 20))
 }
 
 \arguments{
-  \item{coverageTarget}{\code{\link[IRanges:Rle-class]{RleList}} containing \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageTarget}{\code{\link[IRanges:AtomicList-class]{RleList}} containing \code{\link[S4Vectors:Rle-class]{Rle}}
         vectors of per-target-base coverages for each chromosome, i.e. \code{coverageTarget} output from \code{\link{coverage.target}}}
   \item{k}{integer vector of \code{k}-values for which to show fraction of target bases with coverage >= \code{k}}
 }

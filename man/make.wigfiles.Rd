@@ -9,7 +9,7 @@ make.wigfiles(coverageAll, chroms, trackname = "Coverage", filename = "Coverage"
 }
 
 \arguments{
-  \item{coverageAll}{\code{\link[IRanges:Rle-class]{RleList}} containing \code{\link[IRanges:Rle-class]{Rle}}
+  \item{coverageAll}{\code{\link[IRanges:AtomicList-class]{RleList}} containing \code{\link[S4Vectors:Rle-class]{Rle}}
         vectors of per-base coverages for each chromosome, i.e. \code{coverageAll} output of \code{\link{coverage.target}}}
   \item{chroms}{vector of chromosome names for which to produce wiggle files; if missing
       wiggle files will be produced for all chromosomes on which there are reads}
