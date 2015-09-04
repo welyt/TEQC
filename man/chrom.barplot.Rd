@@ -3,7 +3,7 @@
 \title{Reads per chromosome barplot}
 \description{Barplot of numbers (or fractions) of reads (and targets) falling on each chromosome}
 
-\usage{chrom.barplot(reads, targets, col = c("darkgreen", "orange"), ylab, legendpos = "topright", ...)}
+\usage{chrom.barplot(reads, targets, plotchroms, col = c("darkgreen", "orange"), ylab, legendpos = "topright", ...)}
 
 \arguments{
   \item{reads}{\code{\link[IRanges:RangedData-class]{RangedData}} table containing read positions,
@@ -13,6 +13,7 @@
   \item{targets}{Optional \code{\link[IRanges:RangedData-class]{RangedData}} table containing positions
       of target regions, i.e. output from \code{\link{get.targets}}. The chromosome information should match
       the one of \code{reads}. If \code{targets} is missing, only numbers of reads will be displayed.}
+  \item{plotchroms}{character vector specifying the chromosomes that shall be included in the plot (and their desired order)}
   \item{col}{color(s) of the bars}
   \item{ylab}{y-axis label}
   \item{legendpos}{Position of the legend. String from the list "bottomright", "bottom", "bottomleft",

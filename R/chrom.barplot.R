@@ -1,12 +1,21 @@
 chrom.barplot <-
-function(reads, targets, col=c("darkgreen", "orange"), ylab, legendpos="topright", ...){
-
+## !! 05/09/2015: add parameter 'plotchroms' such that the user can specify the chromosomes to plot
+  #   (and in the order they want)
+#function(reads, targets, col=c("darkgreen", "orange"), ylab, legendpos="topright", ...){
+function(reads, targets, plotchroms, col=c("darkgreen", "orange"), ylab, legendpos="topright", ...){
+    
   # in case 'reads' is output of 'reads2pairs' and contains also 'singleReads'
   if(is.list(reads) & ("readpairs" %in% names(reads)))
-    reads <- reads$readpairs
-
+    reads <- reads$readpairs  
+  
   tab0 <- table(space(reads))
   chrs <- names(tab0)
+  
+## !! 05/09/2015 check if specified 'plotchroms' exist in data
+  if(!missing(plotchroms))
+    if(!all(plotchroms %in% chrs))
+      stop("'plotchroms' specify chromosome names that do not exist in the data")
+## !!
   
   # if also targets are given ...
   if(!missing(targets)){
@@ -23,15 +32,24 @@ function(reads, targets, col=c("darkgreen", "orange"), ylab, legendpos="topright
     chrs <- names(tab0)
   }
 
-  # order chromosomes
-  chr <- substr(chrs, 4, 4)
-  g <- grep("chr\\d{2}", names(tab0), perl=TRUE)
-  chr[g] <- substr(names(tab0)[g], 4, 5)
-  chrn <- as.numeric(chr[!(chr %in% c("M", "U", "X", "Y"))])
-  tab <- tab0[!(chr %in% c("M", "U", "X", "Y"))]
-  tab <- tab[order(chrn)]
-  tab <- c(tab, tab0[chr %in% c("M", "U", "X", "Y")])
-  
+## !! 05/09/2015
+  if(missing(plotchroms)){
+    # order chromosomes
+    chr <- substr(chrs, 4, 4)
+    g <- grep("chr\\d{2}", names(tab0), perl=TRUE)
+    chr[g] <- substr(names(tab0)[g], 4, 5)
+    chrn <- as.numeric(chr[!(chr %in% c("M", "U", "X", "Y"))])
+    tab <- tab0[!(chr %in% c("M", "U", "X", "Y"))]
+    tab <- tab[order(chrn)]
+    tab <- c(tab, tab0[chr %in% c("M", "U", "X", "Y")])
+  }
+  # ... or select specified chromosomes
+  else{
+    tab <- tab0[plotchroms]
+    tabtar <- tabtar[names(tabtar) %in% plotchroms]
+  }
+## !!
+
   # merge per-chromosome fractions of reads and targets (if latter is given)
   if(!missing(targets)){
     tab <- rbind(tab, 0)

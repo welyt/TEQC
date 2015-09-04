@@ -1,3 +1,9 @@
+CHANGES IN VERSION 3.9.1
+----------------------
+
+  o bug fix regarding use of 'Offset' bases in 'TEQCreport'
+
+
 CHANGES IN VERSION 3.5.4
 ----------------------
 

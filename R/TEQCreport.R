@@ -13,7 +13,7 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
 # pairedend: are the data paired-end reads?
 # genome, genomesize: options as needed for 'fraction.target()'
 # k: parameter for 'covered.k()'
-# !! covthreshold: coverage threshold for 'coverage.hist()'
+# covthreshold: coverage threshold for 'coverage.hist()'
 # CovUniformityPlot, CovTargetLengthPlot, CovGCPlot, duplicatesPlot: shall corresponding plots be created?
 # baits: baits table or command how to read it
 # WigFiles: shall wiggle files be created
@@ -109,7 +109,13 @@ TEQCreport <- function(sampleName="", targetsName="", referenceName="", destDir=
   # coverage per target
   print("counting reads per target...")
   targetcov0 <- Coverage$targetCoverages
-  targetcov0 <- readsPerTarget(reads, targetcov0, Offset=Offset)
+  
+  ## !! 05/09/2016: Offset was already added when calculating coverage.target() 
+  #     -> here we would add another Offset bases to the targets!
+  #targetcov0 <- readsPerTarget(reads, targetcov0, Offset=Offset)
+  targetcov0 <- readsPerTarget(reads, targetcov0)
+  ## !!
+  
   targetcov <- as.data.frame(targetcov0)
   write.table(targetcov, file=file.path(destDir, "target_coverage.txt"),
               sep="\t", row.names=F, quote=F)
@@ -395,7 +401,7 @@ htmlCovGC <- function(dir, coverageAll, baits, figureFormat, ...){
     hwriteImage(file.path(".", "image", figFile), link=file.path(".", "image", pdfFile))
 }
 
-#!! add 'ylab' parameter
+# add 'ylab' parameter
 htmlDuplicatesBarplot <- function(dir, reads, targets, figureFormat, ylab, ...){
   figFile <- paste("duplicates_barplot", figureFormat, sep=".")
   pdfFile <- "duplicates_barplot.pdf"
