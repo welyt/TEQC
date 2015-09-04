@@ -1,6 +1,8 @@
 CHANGES IN VERSION 3.9.1
 ----------------------
 
+  o new parameter 'plotchroms' in function 'chrom.barplot' that allows to specify the chromosomes (and their desired order) that shall be included in the plot
+
   o bug fix regarding use of 'Offset' bases in 'TEQCreport'
 
 
