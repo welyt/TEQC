@@ -1,3 +1,9 @@
+CHANGES IN VERSION 3.11.1
+----------------------
+
+  o bug fix in 'reads2pairs': when there are chromosomes/contigs without any mapped reads, those will be removed automatically 
+
+
 CHANGES IN VERSION 3.9.1
 ----------------------
 
