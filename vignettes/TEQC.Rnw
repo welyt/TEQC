@@ -626,10 +626,7 @@ is provided that includes only unique read positions, or the tables are collapse
 e.g. by the following code.
 
 <<collapse1>>=
-dupfun <- function(x) duplicated(x$ranges)
-params <- RDApplyParams(rangedData=reads, applyFun=dupfun)
-dups <- unlist(rdapply(params))
-reads.collapsed <- reads[!dups,,drop=T]
+reads.collapsed <- unique(reads)
 @
 
 In the case of paired-end data, as said before, reads only have to be considered duplicated
@@ -639,8 +636,7 @@ non-duplicated reads from the \Robject{readpairs} table (and in case of duplicat
 of the respective reads) and extracting those from the original \Robject{read} table.
 
 <<collapse2>>=
-params2 <- RDApplyParams(rangedData=readpairs, applyFun=dupfun)
-dups2 <- unlist(rdapply(params2))
+dups2 <- duplicated(readpairs)
 ID.nondups <- readpairs$ID[!dups2]
 sel <- reads$ID %in% ID.nondups
 reads.collapsed.pairs <- reads[sel,,drop=T]

@@ -22,10 +22,8 @@ function(reads, targets, returnDups=FALSE, truncateX, col=c("red","lightblue"), 
   reads.on <- reads[on.target,]
   reads.off <- reads[!on.target,]
 
-  params.on <- RDApplyParams(rangedData=reads.on, applyFun=multfun)
-  multi.on <- unlist(rdapply(params.on))
-  params.off <- RDApplyParams(rangedData=reads.off, applyFun=multfun)
-  multi.off <- unlist(rdapply(params.off))
+  multi.on <- unlist(lapply(reads.on, multfun))
+  multi.off <- unlist(lapply(reads.off, multfun))
 
   # summarize over chromosomes
   m.on <- sapply(strsplit(names(multi.on), "\\."), function(x) x[2])
