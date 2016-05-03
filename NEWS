@@ -1,0 +1,94 @@
+CHANGES IN VERSION 3.11.1
+----------------------
+
+  o bug fix in 'reads2pairs': when there are chromosomes/contigs without any mapped reads, those will be removed automatically 
+
+
+CHANGES IN VERSION 3.9.1
+----------------------
+
+  o new parameter 'plotchroms' in function 'chrom.barplot' that allows to specify the chromosomes (and their desired order) that shall be included in the plot
+
+  o bug fix regarding use of 'Offset' bases in 'TEQCreport'
+
+
+CHANGES IN VERSION 3.5.4
+----------------------
+
+  o bug fix in '.coverage.hist' regarding calculation of cumulative coverage fractions (affects values in the 'sensitivity.txt' output table and the sensitivity barplots in the multiTEQCreport)
+
+ o bug fix in 'htmlDuplicatesBarplot': also working now for paired-end data
+
+
+CHANGES IN VERSION 3.5.3
+----------------------
+
+  o bug fix in 'coverage.hist': coverage outlier values are removed from the histogram if 'outline=FALSE', but cumulative base fractions are now still calculated based on the complete coverage data (affects the orange line in the coverage histogram, the values in the 'sensitivity.txt' output table and the sensitivity barplots in the multiTEQCreport) 
+
+
+CHANGES IN VERSION 3.5.2
+----------------------
+
+  o new option 'covthreshold' in 'TEQCreport' (same as in 'coverage.hist') to manipulate which coverage value should be highlighted by dashed lines in the coverage histogram 
+
+
+CHANGES IN VERSION 3.5.1
+----------------------
+
+  o choice between jpeg, png and tiff figures in 'TEQCreport' and 'multiTEQCreport'
+
+
+CHANGES IN VERSION 3.0.0
+----------------------
+
+  o new function 'multiTEQCreport' collects results from 'TEQCreport' output from multiple samples and creates a combined quality report
+
+
+CHANGES IN VERSION 2.9.2
+----------------------
+
+  o bug fix in 'coverage.target': when getting reads data from a BAM file, output of average coverage values per target was wrong (in wrong order)
+
+
+CHANGES IN VERSION 2.7.2
+----------------------
+
+  o bug fix in 'coverage.target' (chromosomes without any read but appearing in the BAM file header were a problem)
+
+
+CHANGES IN VERSION 2.0.0
+----------------------
+
+  o new function 'TEQCreport' creates an html report with standard TEQC analysis results
+  o besides bed files, now also BAM files can be used as input for 'get.reads'
+  o 'get.reads' and 'get.targets' now only read the columns required for the analysis from the respective bed files
+  o when read IDs include '#0/1' and '#0/2' (to indicate read 1 and read 2 of a pair), those characters will be removed from the IDs within 'get.reads'. The reason is that in 'reads2pairs' the two IDs of a read pair have to be identical.
+  o the package now depends on packages Rsamtools and hwriter
+  o 'chrom.barplot',' fraction.reads.target', 'insert.size.hist', and 'duplicates.barplot' now also can deal with with 'reads2pairs' output having the two elements 'singleReads' and 'readpairs'
+
+
+CHANGES IN VERSION 1.1.2
+----------------------
+
+  o bug fix in 'coverage.target' and 'coverage.GC' (in very large datasets, global coverage average and standard deviation were not calculated)
+
+
+
+CHANGES IN VERSION 1.1.0
+----------------------
+
+  o fix in 'reads2pairs': when the two reads of a read pair map to different chromosomes, they will be returned within the
+  'singleReads' element of the output (before function gave en error in case of such read pairs)
+  o added optional argument 'max.distance' to 'reads2pairs'; when the reads of a read pair are further apart than 'max.dist'
+  bases, they will be added to the 'singleReads' element of the output instead to the 'readpairs' element
+
+
+
+CHANGES IN VERSION 0.99.2
+----------------------
+
+  o added elements 'targetCoverageSD' and 'targetCoverageQuantiles' to output of function coverage.target
+  o added column 'coverageSD' to 'targetCoverages' output of function coverage.target
+  o 'chrom.barplot' can now show fractions of reads and targets per chromosome simultaneously 
+  o 'coverage.plot' can now be called repeatedly to show coverage of several samples in one graph
+  
